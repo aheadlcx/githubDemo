@@ -10,12 +10,15 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import me.aheadlcx.github.api.RetrofitUtil
 import me.aheadlcx.github.api.TokenBeanReq
 import me.aheadlcx.github.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
+
+    var scope = MainScope()
 
     companion object {
         init {
@@ -56,8 +59,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun initListener() {
         binding.txtUser.setOnClickListener(View.OnClickListener {
-//            getUserInfoEvent()
-            getUserInfo()
+//            getUserInfo()
+            getUserInfoKotlin()
         })
         binding.txtLogin.setOnClickListener {
             Log.i(TAG, "initListener: webView.loadUrl=${url}")
@@ -65,36 +68,51 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun getUserInfoEvent() {
-        Log.i(TAG, "getUserInfo: ")
-        GlobalScope.launch(Dispatchers.IO) {
-//            val userInfo = RetrofitUtil.getGithubService().getUserInfo("Bearer " + RetrofitUtil.accessToken)
-            val userInfo = RetrofitUtil.getGithubService(RetrofitUtil.baseUrl_event)
-                .getUserEvent(
-                    "Bearer123 " + RetrofitUtil
-                        .accessToken
-                )
-            val response = userInfo.execute()
-            Log.i(TAG, "getUserInfo:isSuccessful=" + response.isSuccessful)
+    private fun test(){
+        scope.launch {
+            kotlin.runCatching {
+                "请求数据"
+            }.onSuccess {
+                Log.i(TAG, "test: 成功= " + it)
+            }.onFailure {
+                Log.i(TAG, "test: 失败=" + it.message)
+            }.getOrNull()?.let {
+                Log.i(TAG, "test: 数据为空")
+            }
         }
     }
 
+    private fun getUserInfoKotlin() {
+        scope.launch {
+            val userInfo = RetrofitUtil.getGithubServiceKotlin(RetrofitUtil.baseUrl_event)
+                .getUserInfoSub(getOauth())
+            Log.i(TAG, "getUserInfoKotlin:userName= ${userInfo.login}")
+            binding.txtShowInfo.post({
+                binding.txtShowInfo.text = userInfo.login
+            })
+        }
+    }
+
+    private fun getOauth(): String {
+        return "Bearer " + RetrofitUtil.accessToken
+    }
 
     private fun getUserInfo() {
         Log.i(TAG, "getUserInfo: ")
         GlobalScope.launch(Dispatchers.IO) {
 //            val userInfo = RetrofitUtil.getGithubService().getUserInfo("Bearer " + RetrofitUtil.accessToken)
             val userInfo = RetrofitUtil.getGithubService(RetrofitUtil.baseUrl_event)
-                .getUserInfo(
-                    "Bearer " + RetrofitUtil
-                        .accessToken
-                )
-            val response = userInfo.execute()
-            val body = response.body()
-            Log.i(TAG, "getUserInfo:isSuccessful=" + response.isSuccessful)
-            binding.txtShowInfo.post({
-                binding.txtShowInfo.text = body?.name
-            })
+                .getUserInfo(getOauth())
+            try {
+                val response = userInfo.execute()
+                val body = response.body()
+                Log.i(TAG, "getUserInfo:isSuccessful=" + response.isSuccessful)
+                binding.txtShowInfo.post({
+                    binding.txtShowInfo.text = body?.login
+                })
+            } catch (e: Exception) {
+                Log.i(TAG, "getUserInfo: error=${e.message}")
+            }
         }
     }
 

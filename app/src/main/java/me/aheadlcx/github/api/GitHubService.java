@@ -39,4 +39,5 @@ public interface GitHubService {
     })
     @GET("users/aheadlcx/events/public")
     Call<Object> getUserEvent(@Header("Authorization") String auth);
+
 }

@@ -35,7 +35,6 @@ import retrofit2.Retrofit;
  */
 public class RetrofitUtil {
     private static final String TAG = "RetrofitUtil";
-    //    private static Retrofit sRetrofit;
     private static Map<String, Retrofit> map = new HashMap<>();
     private static final int DEFAULT_CONNECT_TIMEOUT = 30;
     private static final int DEFAULT_READ_TIMEOUT = 30;
@@ -80,22 +79,15 @@ public class RetrofitUtil {
         });
         clientBuilder.connectTimeout(DEFAULT_CONNECT_TIMEOUT, TimeUnit.SECONDS)
                 .readTimeout(DEFAULT_READ_TIMEOUT, TimeUnit.SECONDS);
-//        ClearableCookieJar cookieJar =
-//                new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(App.get()));
-//        clientBuilder.cookieJar(cookieJar);
         clientBuilder.hostnameVerifier(new HostnameVerifier() {
             @Override
             public boolean verify(String hostname, SSLSession session) {
                 return true;
             }
         });
-//                    X509TrustManager x509TrustManager = new RequestTrustX509Manager();
-//                    clientBuilder.sslSocketFactory(sslSocketFactory(x509TrustManager),x509TrustManager);
         Retrofit.Builder builder = new Retrofit.Builder().client(clientBuilder.build())
                 .baseUrl(url)
-//                .addConverterFactory(GsonOriginConvertFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(new Gson()));
-//                .addCallAdapterFactory(RxJava2CallAdapterFactory.create());
 
         Retrofit retrofitRes = builder.build();
         map.put(url, retrofitRes);
@@ -116,6 +108,10 @@ public class RetrofitUtil {
 
     public static GitHubService getGithubService(String url) {
         return getRetrofit(url).create(GitHubService.class);
+    }
+
+    public static GitHubServiceKotlin getGithubServiceKotlin(String url) {
+        return getRetrofit(url).create(GitHubServiceKotlin.class);
     }
 
     private static SSLSocketFactory sslSocketFactory(X509TrustManager x509Manager) {

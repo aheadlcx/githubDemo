@@ -31,7 +31,5 @@ class JsonResponseBodyConverter<T> implements Converter<ResponseBody, T> {
         } finally {
             value.close();
         }
-
-
     }
 }
