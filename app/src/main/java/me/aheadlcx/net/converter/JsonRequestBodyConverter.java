@@ -1,4 +1,4 @@
-package me.aheadlcx.github.api.converter;
+package me.aheadlcx.net.converter;
 
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;

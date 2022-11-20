@@ -1,4 +1,4 @@
-package me.aheadlcx.github.api.converter;
+package me.aheadlcx.net.converter;
 
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
@@ -28,6 +28,7 @@ class JsonResponseBodyConverter<T> implements Converter<ResponseBody, T> {
         JsonReader jsonReader = mGson.newJsonReader(value.charStream());
         try {
             return adapter.read(jsonReader);
+//            return ((T)new ApiResult.BizSuccess(0, "success", adapter.read(jsonReader)));
         } finally {
             value.close();
         }

@@ -1,4 +1,4 @@
-package me.aheadlcx.github.api.converter;
+package me.aheadlcx.net.converter;
 
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
@@ -15,7 +15,7 @@ import retrofit2.Retrofit;
 /**
  * Created by LIWUJUN on 2016/11/27.
  */
-public final class GsonConverterFactory extends Converter.Factory {
+public class GsonConverterFactory extends Converter.Factory {
     private final Gson gson;
 
     public GsonConverterFactory(Gson gson) {
