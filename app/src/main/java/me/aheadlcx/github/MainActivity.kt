@@ -15,6 +15,7 @@ import kotlinx.coroutines.launch
 import me.aheadlcx.github.api.RetrofitUtil
 import me.aheadlcx.github.api.TokenBeanReq
 import me.aheadlcx.github.databinding.ActivityMainBinding
+import me.aheadlcx.github.util.rxLaunch
 
 class MainActivity : AppCompatActivity() {
 
@@ -34,7 +35,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private lateinit var binding: ActivityMainBinding
-
     private lateinit var mWebView: WebView
 
 
@@ -65,6 +65,12 @@ class MainActivity : AppCompatActivity() {
         binding.txtLogin.setOnClickListener {
             Log.i(TAG, "initListener: webView.loadUrl=${url}")
             binding.webView.loadUrl(url)
+        }
+    }
+
+    private fun testClickOne(){
+        scope.rxLaunch<String> {
+
         }
     }
 
