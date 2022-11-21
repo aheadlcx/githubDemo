@@ -1,4 +1,4 @@
-package me.aheadlcx.github.util
+package me.aheadlcx.util
 
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope

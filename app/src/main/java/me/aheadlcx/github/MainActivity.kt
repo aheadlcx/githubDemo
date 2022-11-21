@@ -12,10 +12,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
-import me.aheadlcx.github.api.RetrofitUtil
+import me.aheadlcx.net.RetrofitUtil
 import me.aheadlcx.github.api.TokenBeanReq
 import me.aheadlcx.github.databinding.ActivityMainBinding
-import me.aheadlcx.github.util.rxLaunch
+import me.aheadlcx.util.rxLaunch
 
 class MainActivity : AppCompatActivity() {
 
@@ -75,6 +75,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun test(){
+        scope.rxLaunch<String> {
+            onRequest = {
+                "dataFromRequest"
+            }
+            onSuccess = {
+                Log.i(TAG, "test: onSuccess.it= ${it}")
+            }
+            onError = {
+
+            }
+        }
+
         scope.launch {
             kotlin.runCatching {
                 "请求数据"
@@ -90,7 +102,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun getUserInfoKotlin() {
         scope.launch {
-            val userInfo = RetrofitUtil.getGithubServiceKotlin(RetrofitUtil.baseUrl_event)
+            val userInfo = RetrofitUtil.getGithubServiceKotlin(
+                RetrofitUtil.baseUrl_event)
                 .getUserInfoSub(getOauth())
             Log.i(TAG, "getUserInfoKotlin:userName= ${userInfo.login}")
             binding.txtShowInfo.post({
@@ -107,7 +120,8 @@ class MainActivity : AppCompatActivity() {
         Log.i(TAG, "getUserInfo: ")
         GlobalScope.launch(Dispatchers.IO) {
 //            val userInfo = RetrofitUtil.getGithubService().getUserInfo("Bearer " + RetrofitUtil.accessToken)
-            val userInfo = RetrofitUtil.getGithubService(RetrofitUtil.baseUrl_event)
+            val userInfo = RetrofitUtil.getGithubService(
+                RetrofitUtil.baseUrl_event)
                 .getUserInfo(getOauth())
             try {
                 val response = userInfo.execute()

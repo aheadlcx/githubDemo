@@ -1,4 +1,4 @@
-package me.aheadlcx.github.api;
+package me.aheadlcx.net;
 
 import android.text.TextUtils;
 import android.util.Log;
@@ -21,7 +21,11 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-import me.aheadlcx.github.api.converter.GsonConverterFactory;
+import me.aheadlcx.github.api.GitHubService;
+import me.aheadlcx.github.api.GitHubServiceKotlin;
+import me.aheadlcx.github.api.adapter.ApiResultCallAdapterFactory;
+import me.aheadlcx.net.converter.GsonConverterFactory;
+import me.aheadlcx.wan.net.converter.CustomGsonConverterFactory;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -77,6 +81,11 @@ public class RetrofitUtil {
                 return chain.proceed(request);
             }
         });
+        Retrofit.Builder builder = new Retrofit.Builder().client(clientBuilder.build())
+                .baseUrl(url)
+                .addConverterFactory(GsonConverterFactory.create(new Gson()));
+//                .addConverterFactory(CustomGsonConverterFactory.create())
+//                .addCallAdapterFactory(new ApiResultCallAdapterFactory());
         clientBuilder.connectTimeout(DEFAULT_CONNECT_TIMEOUT, TimeUnit.SECONDS)
                 .readTimeout(DEFAULT_READ_TIMEOUT, TimeUnit.SECONDS);
         clientBuilder.hostnameVerifier(new HostnameVerifier() {
@@ -85,9 +94,6 @@ public class RetrofitUtil {
                 return true;
             }
         });
-        Retrofit.Builder builder = new Retrofit.Builder().client(clientBuilder.build())
-                .baseUrl(url)
-                .addConverterFactory(GsonConverterFactory.create(new Gson()));
 
         Retrofit retrofitRes = builder.build();
         map.put(url, retrofitRes);
