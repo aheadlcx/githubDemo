@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import me.aheadlcx.github.api.adapter.ApiResult
 import me.aheadlcx.github.databinding.ActivityMainBinding
@@ -35,7 +37,40 @@ class WanActivity : AppCompatActivity() {
         binding.txtGet.setOnClickListener {
             getWanDataRx()
         }
+        binding.txtTest.setOnClickListener {
+            testException()
+        }
     }
+
+    private fun testException() {
+        scope.launch {
+            flow<String> {
+                val haha = "retrofit"
+                if (haha.contains("retrofit")) {
+                    throw Exception("exception.retrofit")
+                } else {
+                    emit(haha)
+                }
+            }.flowOn(Dispatchers.IO)
+                .onCompletion { cause ->
+//                    run {
+                        if (cause != null) {
+                            Log.i(TAG, "testException.onCompletion.error: " + cause.message)
+                        } else {
+                            Log.i(TAG, "testException.onCompletion.success: ")
+                        }
+
+//                    }
+                }.catch { cause ->
+                    Log.i(TAG, "testException.catch: ${cause.message}")
+                }
+                .collect {
+                    Log.i(TAG, "testException.collect.data:${it}")
+
+                }
+        }
+    }
+
 
     private fun getWanDataRx() {
         scope.rxLaunch<Banner2> {

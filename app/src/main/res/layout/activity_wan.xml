@@ -20,4 +20,13 @@
         android:textSize="20dp"
         android:layout_width="match_parent"
         android:layout_height="100dp"/>
+
+    <TextView
+        android:id="@+id/txtTest"
+        android:text="测试按钮"
+        android:gravity="center"
+        android:textSize="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"/>
+
 </LinearLayout>
