@@ -4,9 +4,20 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.launch
 import me.aheadlcx.github.databinding.ActivityLiferecycleBinding
 import me.aheadlcx.github.databinding.ActivityWanBinding
+import me.aheadlcx.jetpack.net.FlowRetrofitUtil
+import me.aheadlcx.jetpack.net.service.WanAndroidService
 import me.aheadlcx.net.People
+import me.aheadlcx.wan.WanActivity
 
 /**
  * Description:
@@ -15,6 +26,8 @@ import me.aheadlcx.net.People
  */
 class LifeRecycleActivity : AppCompatActivity() {
 
+    private val scope = MainScope()
+
     companion object {
         private const val TAG = "LifeRecycleActivity"
     }
@@ -22,7 +35,6 @@ class LifeRecycleActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLiferecycleBinding
     private var peopleLiveData: MutableLiveData<People> = MutableLiveData<People>()
     private var count = 1
-
 
     private val myViewModel by lazy {
         ViewModelProvider(this).get("12", MyViewModel::class.java).apply {
@@ -46,7 +58,41 @@ class LifeRecycleActivity : AppCompatActivity() {
 
         binding.txtClick.setOnClickListener {
 //            clickItem()
-            addLogLifecycle()
+//            addLogLifecycle()
+//            testFlow()
+            testWanFlowService()
+        }
+    }
+
+    private fun testWanFlowService() {
+        Log.i(TAG, "testWanFlowService: ")
+        scope.launch(Dispatchers.IO) {
+            val service = FlowRetrofitUtil.getRetrofit().create(WanAndroidService::class.java)
+            service.getBanner()
+                .flowOn(Dispatchers.IO)
+                .catch {
+                    Log.i(TAG, "testWanFlowService: 异常")
+                }.collect {
+                    Log.i(TAG, "testWanFlowService: 请求数据成功")
+                    for (item in it.data) {
+                        Log.i(TAG, "testWanFlowService: 描述是" + item.desc)
+                    }
+                }
+        }
+    }
+
+    private fun testFlow() {
+        scope.launch {
+
+            flow {
+                for (i in 1..5) {
+                    delay(100)
+                    Log.i(LifeRecycleActivity.TAG, "testFlow: 准备emit")
+                    emit(i)
+                }
+            }.collect {
+                Log.i(LifeRecycleActivity.TAG, "testFlow: ${it}")
+            }
         }
     }
 

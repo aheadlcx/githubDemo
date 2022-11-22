@@ -15,10 +15,10 @@ import retrofit2.Retrofit;
 /**
  * Created by LIWUJUN on 2016/11/27.
  */
-public class GsonConverterFactory extends Converter.Factory {
+public class MyGsonConverterFactory extends Converter.Factory {
     private final Gson gson;
 
-    public GsonConverterFactory(Gson gson) {
+    public MyGsonConverterFactory(Gson gson) {
         this.gson = gson;
     }
 
@@ -26,8 +26,8 @@ public class GsonConverterFactory extends Converter.Factory {
      * Create an instance using a default {@link Gson} instance for conversion. Encoding to JSON and
      * decoding from JSON (when no charset is specified by a header) will use UTF-8.
      */
-    public static GsonConverterFactory create(Gson gson) {
-        return new GsonConverterFactory(gson);
+    public static MyGsonConverterFactory create(Gson gson) {
+        return new MyGsonConverterFactory(gson);
     }
 
 

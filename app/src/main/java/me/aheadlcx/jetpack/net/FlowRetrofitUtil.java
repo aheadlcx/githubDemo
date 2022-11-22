@@ -1,4 +1,4 @@
-package me.aheadlcx.net;
+package me.aheadlcx.jetpack.net;
 
 import android.text.TextUtils;
 import android.util.Log;
@@ -23,19 +23,21 @@ import javax.net.ssl.X509TrustManager;
 
 import me.aheadlcx.github.api.GitHubService;
 import me.aheadlcx.github.api.GitHubServiceKotlin;
+import me.aheadlcx.jetpack.net.flow.FlowCallAdapterFactory;
 import me.aheadlcx.net.converter.MyGsonConverterFactory;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Description:
  * author: aheadlcx
  * Date:2022/11/15 2:34 下午
  */
-public class RetrofitUtil {
+public class FlowRetrofitUtil {
     private static final String TAG = "RetrofitUtil";
     private static Map<String, Retrofit> map = new HashMap<>();
     private static final int DEFAULT_CONNECT_TIMEOUT = 30;
@@ -43,10 +45,11 @@ public class RetrofitUtil {
 
     public static String accessToken = "";
     public static String baseUrl_event = "https://api.github.com/";
-    private static String baseUrl = "https://github.com/";
+//    private static String baseUrl = "https://github.com/";
+    static String baseUrl = "https://www.wanandroid.com/";
 
     public static void setAccessToken(String accessToken) {
-        RetrofitUtil.accessToken = accessToken;
+        FlowRetrofitUtil.accessToken = accessToken;
     }
 
     public static Retrofit init() {
@@ -81,6 +84,8 @@ public class RetrofitUtil {
         });
         Retrofit.Builder builder = new Retrofit.Builder().client(clientBuilder.build())
                 .baseUrl(url)
+                .addCallAdapterFactory(FlowCallAdapterFactory.create(false))
+//                .addConverterFactory(GsonConverterFactory.create());
                 .addConverterFactory(MyGsonConverterFactory.create(new Gson()));
 //                .addConverterFactory(CustomGsonConverterFactory.create())
 //                .addCallAdapterFactory(new ApiResultCallAdapterFactory());

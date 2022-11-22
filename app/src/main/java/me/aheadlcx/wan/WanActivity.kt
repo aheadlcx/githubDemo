@@ -4,8 +4,11 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import me.aheadlcx.github.api.adapter.ApiResult
@@ -38,8 +41,27 @@ class WanActivity : AppCompatActivity() {
             getWanDataRx()
         }
         binding.txtTest.setOnClickListener {
-            testException()
+//            testException()
         }
+        addLifeCycleListener();
+    }
+
+
+
+    private fun addLifeCycleListener() {
+        lifecycle.addObserver(object : DefaultLifecycleObserver {
+            override fun onCreate(owner: LifecycleOwner) {
+                super.onCreate(owner)
+            }
+
+            override fun onResume(owner: LifecycleOwner) {
+                super.onResume(owner)
+            }
+
+            override fun onPause(owner: LifecycleOwner) {
+                super.onPause(owner)
+            }
+        })
     }
 
     private fun testException() {
@@ -54,11 +76,11 @@ class WanActivity : AppCompatActivity() {
             }.flowOn(Dispatchers.IO)
                 .onCompletion { cause ->
 //                    run {
-                        if (cause != null) {
-                            Log.i(TAG, "testException.onCompletion.error: " + cause.message)
-                        } else {
-                            Log.i(TAG, "testException.onCompletion.success: ")
-                        }
+                    if (cause != null) {
+                        Log.i(TAG, "testException.onCompletion.error: " + cause.message)
+                    } else {
+                        Log.i(TAG, "testException.onCompletion.success: ")
+                    }
 
 //                    }
                 }.catch { cause ->
