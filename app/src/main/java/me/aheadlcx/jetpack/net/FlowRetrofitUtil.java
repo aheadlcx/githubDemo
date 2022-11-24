@@ -85,8 +85,8 @@ public class FlowRetrofitUtil {
         Retrofit.Builder builder = new Retrofit.Builder().client(clientBuilder.build())
                 .baseUrl(url)
                 .addCallAdapterFactory(FlowCallAdapterFactory.create(false))
-//                .addConverterFactory(GsonConverterFactory.create());
-                .addConverterFactory(MyGsonConverterFactory.create(new Gson()));
+//                .addConverterFactory(MyGsonConverterFactory.create(new Gson()));
+                .addConverterFactory(GsonConverterFactory.create());
 //                .addConverterFactory(CustomGsonConverterFactory.create())
 //                .addCallAdapterFactory(new ApiResultCallAdapterFactory());
         clientBuilder.connectTimeout(DEFAULT_CONNECT_TIMEOUT, TimeUnit.SECONDS)

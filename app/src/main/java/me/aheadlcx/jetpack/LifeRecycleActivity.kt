@@ -4,18 +4,17 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.*
+import androidx.lifecycle.map
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import me.aheadlcx.github.databinding.ActivityLiferecycleBinding
 import me.aheadlcx.github.databinding.ActivityWanBinding
 import me.aheadlcx.jetpack.net.FlowRetrofitUtil
 import me.aheadlcx.jetpack.net.service.WanAndroidService
+import me.aheadlcx.jetpack.net.service.weather.ApiServiceManager
 import me.aheadlcx.net.People
 import me.aheadlcx.wan.WanActivity
 
@@ -60,7 +59,8 @@ class LifeRecycleActivity : AppCompatActivity() {
 //            clickItem()
 //            addLogLifecycle()
 //            testFlow()
-            testWanFlowService()
+//            testWanFlowService()
+            getWeatherNetData()
         }
     }
 
@@ -68,15 +68,38 @@ class LifeRecycleActivity : AppCompatActivity() {
         Log.i(TAG, "testWanFlowService: ")
         scope.launch(Dispatchers.IO) {
             val service = FlowRetrofitUtil.getRetrofit().create(WanAndroidService::class.java)
-            service.getBanner()
+            service.getBanner().flowOn(Dispatchers.IO).catch {
+                Log.i(TAG, "testWanFlowService: 异常")
+            }.collect {
+                Log.i(TAG, "testWanFlowService: 请求数据成功")
+                for (item in it.data) {
+                    Log.i(TAG, "testWanFlowService: 描述是" + item.desc)
+                }
+            }
+        }
+    }
+
+    private fun getWeatherNetData() {
+        Log.i(TAG, "getWeatherNetData:beigin")
+        MainScope().launch {
+            ApiServiceManager.weatherApiService.getWeatherInfoNow(location = "北京")
+                //transform data,if you want to
+                .map {
+                    Log.i(TAG, "getWeatherNetData: map ${it}")
+                    return@map it
+                    // ...
+                }
+                //subscribe on io dispatcher
                 .flowOn(Dispatchers.IO)
-                .catch {
-                    Log.i(TAG, "testWanFlowService: 异常")
-                }.collect {
-                    Log.i(TAG, "testWanFlowService: 请求数据成功")
-                    for (item in it.data) {
-                        Log.i(TAG, "testWanFlowService: 描述是" + item.desc)
-                    }
+                //catch errors
+                .catch { ex ->
+                    println("error occurs:$ex")
+                    Log.i(TAG, "getWeatherNetData: " + "error occurs:${ex}")
+                }
+                //subscribe data
+                .collect {
+                    println("weather info:$it")
+                    Log.i(TAG, "getWeatherNetData: " + "weather info:$it")
                 }
         }
     }
