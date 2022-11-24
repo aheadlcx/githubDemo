@@ -17,6 +17,7 @@ import me.aheadlcx.jetpack.net.service.WanAndroidService
 import me.aheadlcx.jetpack.net.service.weather.ApiServiceManager
 import me.aheadlcx.net.People
 import me.aheadlcx.wan.WanActivity
+import retrofit2.HttpException
 
 /**
  * Description:
@@ -59,8 +60,8 @@ class LifeRecycleActivity : AppCompatActivity() {
 //            clickItem()
 //            addLogLifecycle()
 //            testFlow()
-            testWanFlowService()
-//            getWeatherNetData()
+//            testWanFlowService()
+            getWeatherNetData()
         }
     }
 
@@ -71,8 +72,14 @@ class LifeRecycleActivity : AppCompatActivity() {
             service.getBanner()
                 .flowOn(Dispatchers.IO)
                 .catch {
-                    Log.i(TAG, "testWanFlowService: 异常")
-                }.collect {
+                    Log.i(TAG, "testWanFlowService: 异常" + it.message)
+                    if (it is HttpException){
+                        val code = it.code()
+                        val message = it.message()
+                        Log.i(TAG, "testWanFlowService: 异常 code=${code},message=${message}")
+                    }
+                }
+                .collect {
                     Log.i(TAG, "testWanFlowService: 请求数据成功")
                     for (item in it.data) {
                         Log.i(TAG, "testWanFlowService: 描述是" + item.desc)
@@ -97,6 +104,11 @@ class LifeRecycleActivity : AppCompatActivity() {
                 .catch { ex ->
                     println("error occurs:$ex")
                     Log.i(TAG, "getWeatherNetData: " + "error occurs:${ex}")
+                    if (ex is HttpException){
+                        val code = ex.code()
+                        val message = ex.message()
+                        Log.i(TAG, "getWeatherNetData: 异常 code=${code},message=${message}")
+                    }
                 }
                 //subscribe data
                 .collect {

@@ -18,7 +18,7 @@ object ApiServiceManager {
         .client(
             OkHttpClient.Builder()
                 .addInterceptor(LoggingInterceptor.Builder().build())
-                .addInterceptor(CommonParamsInterceptor())
+//                .addInterceptor(CommonParamsInterceptor())
 //                .addInterceptor(BaseUrlInterceptor())
                 .connectTimeout(10, TimeUnit.SECONDS)
                 .writeTimeout(10, TimeUnit.SECONDS)
