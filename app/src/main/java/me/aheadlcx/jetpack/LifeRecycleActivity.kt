@@ -59,8 +59,8 @@ class LifeRecycleActivity : AppCompatActivity() {
 //            clickItem()
 //            addLogLifecycle()
 //            testFlow()
-//            testWanFlowService()
-            getWeatherNetData()
+            testWanFlowService()
+//            getWeatherNetData()
         }
     }
 
@@ -68,14 +68,16 @@ class LifeRecycleActivity : AppCompatActivity() {
         Log.i(TAG, "testWanFlowService: ")
         scope.launch(Dispatchers.IO) {
             val service = FlowRetrofitUtil.getRetrofit().create(WanAndroidService::class.java)
-            service.getBanner().flowOn(Dispatchers.IO).catch {
-                Log.i(TAG, "testWanFlowService: 异常")
-            }.collect {
-                Log.i(TAG, "testWanFlowService: 请求数据成功")
-                for (item in it.data) {
-                    Log.i(TAG, "testWanFlowService: 描述是" + item.desc)
+            service.getBanner()
+                .flowOn(Dispatchers.IO)
+                .catch {
+                    Log.i(TAG, "testWanFlowService: 异常")
+                }.collect {
+                    Log.i(TAG, "testWanFlowService: 请求数据成功")
+                    for (item in it.data) {
+                        Log.i(TAG, "testWanFlowService: 描述是" + item.desc)
+                    }
                 }
-            }
         }
     }
 
