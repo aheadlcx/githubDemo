@@ -8,16 +8,17 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.onCompletion
+import me.aheadlcx.github.api.GithubApiServiceManager
 import me.aheadlcx.net.RetrofitUtil
 import me.aheadlcx.github.api.TokenBeanReq
 import me.aheadlcx.github.databinding.ActivityMainBinding
 import me.aheadlcx.util.rxLaunch
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
 
     var scope = MainScope()
 
@@ -60,7 +61,8 @@ class MainActivity : AppCompatActivity() {
     private fun initListener() {
         binding.txtUser.setOnClickListener(View.OnClickListener {
 //            getUserInfo()
-            getUserInfoKotlin()
+//            getUserInfoKotlin()
+            getUserInfoFlow()
         })
         binding.txtLogin.setOnClickListener {
             Log.i(TAG, "initListener: webView.loadUrl=${url}")
@@ -68,13 +70,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun testClickOne(){
+    private fun testClickOne() {
         scope.rxLaunch<String> {
 
         }
     }
 
-    private fun test(){
+    private fun test() {
         scope.rxLaunch<String> {
             onRequest = {
                 "dataFromRequest"
@@ -100,10 +102,27 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun getUserInfoFlow() {
+        launch {
+            GithubApiServiceManager.gitHubService.getUserInfoByFlow(getOauth())
+                .flowOn(Dispatchers.IO)
+                .catch { cause ->
+                    Log.i(TAG, "getUserInfoFlow:catch errorMsg=" + cause.message)
+                }
+                .onCompletion { cause ->
+                    Log.i(TAG, "getUserInfoFlow: onCompletion.errorMsg"  + cause?.message)
+                }
+                .collect{
+                    Log.i(TAG, "getUserInfoFlow:请求数据成功=${it}")
+                }
+        }
+    }
+
     private fun getUserInfoKotlin() {
         scope.launch {
             val userInfo = RetrofitUtil.getGithubServiceKotlin(
-                RetrofitUtil.baseUrl_event)
+                RetrofitUtil.baseUrl_event
+            )
                 .getUserInfoSub(getOauth())
             Log.i(TAG, "getUserInfoKotlin:userName= ${userInfo.login}")
             binding.txtShowInfo.post({
@@ -121,7 +140,8 @@ class MainActivity : AppCompatActivity() {
         GlobalScope.launch(Dispatchers.IO) {
 //            val userInfo = RetrofitUtil.getGithubService().getUserInfo("Bearer " + RetrofitUtil.accessToken)
             val userInfo = RetrofitUtil.getGithubService(
-                RetrofitUtil.baseUrl_event)
+                RetrofitUtil.baseUrl_event
+            )
                 .getUserInfo(getOauth())
             try {
                 val response = userInfo.execute()

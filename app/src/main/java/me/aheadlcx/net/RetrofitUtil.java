@@ -24,6 +24,7 @@ import javax.net.ssl.X509TrustManager;
 import me.aheadlcx.github.api.GitHubService;
 import me.aheadlcx.github.api.GitHubServiceKotlin;
 import me.aheadlcx.net.converter.MyGsonConverterFactory;
+import me.aheadlcx.net.interceptor.GithubTokenInterceptor;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -62,23 +63,7 @@ public class RetrofitUtil {
         OkHttpClient.Builder clientBuilder = new OkHttpClient().newBuilder();
         LoggingInterceptor loggingInterceptor = new LoggingInterceptor.Builder().build();
         clientBuilder.addInterceptor(loggingInterceptor);
-        clientBuilder.addInterceptor(new Interceptor() {
-
-            @Override
-            public Response intercept(Chain chain) throws IOException {
-                Request original = chain.request();
-                Request.Builder builder = original.newBuilder();
-                if (!TextUtils.isEmpty(accessToken)) {
-                    builder.header("Authorization", "Bearer " + accessToken);
-                    Log.i(TAG, "intercept: accessToken=" + accessToken);
-                } else {
-                    Log.i(TAG, "intercept: accessToken------");
-                }
-                Request request = builder
-                        .build();
-                return chain.proceed(request);
-            }
-        });
+        clientBuilder.addInterceptor(new GithubTokenInterceptor());
         Retrofit.Builder builder = new Retrofit.Builder().client(clientBuilder.build())
                 .baseUrl(url)
                 .addConverterFactory(MyGsonConverterFactory.create(new Gson()));
