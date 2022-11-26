@@ -16,8 +16,8 @@ class GithubTokenInterceptor : Interceptor {
         private const val TAG = "GithubToken"
     }
     override fun intercept(chain: Interceptor.Chain): Response {
-        val original = chain.request()
-        val builder = original.newBuilder()
+        val originalRequest = chain.request()
+        val builder = originalRequest.newBuilder()
         if (!TextUtils.isEmpty(RetrofitUtil.accessToken)) {
             builder.header("Authorization", "Bearer " + RetrofitUtil.accessToken)
             Log.i(TAG, "intercept: accessToken=" + RetrofitUtil.accessToken)

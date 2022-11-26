@@ -3,6 +3,7 @@ package me.aheadlcx.github.api
 import com.ihsanbal.logging.LoggingInterceptor
 import me.aheadlcx.jetpack.net.flow.FlowCallAdapterFactory
 import me.aheadlcx.jetpack.net.service.weather.WeatherApiService
+import me.aheadlcx.net.interceptor.BaseUrlInterceptor
 import me.aheadlcx.net.interceptor.GithubTokenInterceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -24,6 +25,7 @@ object GithubApiServiceManager {
             OkHttpClient.Builder()
                 .addInterceptor(LoggingInterceptor.Builder().build())
                 .addInterceptor(GithubTokenInterceptor())
+                .addInterceptor(BaseUrlInterceptor())
                 .connectTimeout(10, TimeUnit.SECONDS)
                 .writeTimeout(10, TimeUnit.SECONDS)
                 .readTimeout(10, TimeUnit.SECONDS)

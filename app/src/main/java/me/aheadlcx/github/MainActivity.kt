@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.onCompletion
 import me.aheadlcx.github.api.GithubApiServiceManager
@@ -70,12 +71,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
         }
     }
 
-    private fun testClickOne() {
-        scope.rxLaunch<String> {
-
-        }
-    }
-
     private fun test() {
         scope.rxLaunch<String> {
             onRequest = {
@@ -110,9 +105,9 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
                     Log.i(TAG, "getUserInfoFlow:catch errorMsg=" + cause.message)
                 }
                 .onCompletion { cause ->
-                    Log.i(TAG, "getUserInfoFlow: onCompletion.errorMsg"  + cause?.message)
+                    Log.i(TAG, "getUserInfoFlow: onCompletion.errorMsg" + cause?.message)
                 }
-                .collect{
+                .collect {
                     Log.i(TAG, "getUserInfoFlow:请求数据成功=${it}")
                 }
         }
@@ -164,7 +159,18 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
             it.client_id = client_id
             it.client_secret = client_secret
         }
-        GlobalScope.launch(Dispatchers.IO) {
+        launch {
+            GithubApiServiceManager.gitHubService.getTokenByCodeFlow(req)
+                .flowOn(Dispatchers.IO)
+                .catch { cause ->
+                    Log.i(TAG, "getTokenByCodeFlow:catch.errorMsg=${cause.message}")
+                }.collect {
+                    val accessToken = it.access_token
+                    RetrofitUtil.setAccessToken(accessToken)
+                    Log.i(TAG, "getTokenByCodeFlow: accessToken=${accessToken}")
+                }
+        }
+        launch(Dispatchers.IO) {
             val tokenByCode = RetrofitUtil.getGithubService().getTokenByCode(req)
             try {
                 val response = tokenByCode.execute()
