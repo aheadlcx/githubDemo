@@ -3,6 +3,7 @@ package me.aheadlcx.jetpack
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.launch
 
 /**
  * Description:
@@ -15,6 +16,11 @@ class MyViewModel: ViewModel() {
         private const val TAG = "MyViewModel"
     }
     val nameLiveData = MutableLiveData<String>()
+
+
+    private fun test(){
+    }
+
 
     override fun onCleared() {
         super.onCleared()

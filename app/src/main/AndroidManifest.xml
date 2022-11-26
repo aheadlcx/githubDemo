@@ -39,6 +39,13 @@
         <activity android:name="me.aheadlcx.jetpack.flow.FlowActivityUse"
             android:exported="true"
             >
+
+
+        </activity>
+
+        <activity android:name="me.aheadlcx.jetpack.coroutine.CoroutineActivity"
+            android:exported="true"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
