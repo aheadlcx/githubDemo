@@ -3,7 +3,6 @@ package me.aheadlcx.jetpack.net;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.google.gson.Gson;
 import com.ihsanbal.logging.LoggingInterceptor;
 
 import java.io.IOException;
@@ -23,8 +22,7 @@ import javax.net.ssl.X509TrustManager;
 
 import me.aheadlcx.github.api.GitHubService;
 import me.aheadlcx.github.api.GitHubServiceKotlin;
-import me.aheadlcx.jetpack.net.flow.FlowCallAdapterFactory;
-import me.aheadlcx.net.converter.MyGsonConverterFactory;
+import me.aheadlcx.net.adapter.FlowCallAdapterFactory;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;

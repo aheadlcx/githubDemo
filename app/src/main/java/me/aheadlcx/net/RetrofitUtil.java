@@ -1,12 +1,8 @@
 package me.aheadlcx.net;
 
-import android.text.TextUtils;
-import android.util.Log;
-
 import com.google.gson.Gson;
 import com.ihsanbal.logging.LoggingInterceptor;
 
-import java.io.IOException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -24,11 +20,8 @@ import javax.net.ssl.X509TrustManager;
 import me.aheadlcx.github.api.GitHubService;
 import me.aheadlcx.github.api.GitHubServiceKotlin;
 import me.aheadlcx.net.converter.MyGsonConverterFactory;
-import me.aheadlcx.net.interceptor.GithubTokenInterceptor;
-import okhttp3.Interceptor;
+import me.aheadlcx.jetpack.net.interceptor.GithubTokenInterceptor;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 import retrofit2.Retrofit;
 
 /**

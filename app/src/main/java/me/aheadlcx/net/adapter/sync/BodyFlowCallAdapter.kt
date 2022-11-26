@@ -1,4 +1,4 @@
-package me.aheadlcx.jetpack.net.flow.sync
+package me.aheadlcx.net.adapter.sync
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

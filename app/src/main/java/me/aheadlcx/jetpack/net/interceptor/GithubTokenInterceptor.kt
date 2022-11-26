@@ -1,4 +1,4 @@
-package me.aheadlcx.net.interceptor
+package me.aheadlcx.jetpack.net.interceptor
 
 import android.text.TextUtils
 import android.util.Log

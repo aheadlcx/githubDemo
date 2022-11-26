@@ -1,4 +1,4 @@
-package me.aheadlcx.jetpack.net.flow.async
+package me.aheadlcx.net.adapter.async
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow

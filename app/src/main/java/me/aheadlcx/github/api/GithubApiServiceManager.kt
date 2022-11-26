@@ -1,10 +1,9 @@
 package me.aheadlcx.github.api
 
 import com.ihsanbal.logging.LoggingInterceptor
-import me.aheadlcx.jetpack.net.flow.FlowCallAdapterFactory
-import me.aheadlcx.jetpack.net.service.weather.WeatherApiService
 import me.aheadlcx.net.interceptor.BaseUrlInterceptor
-import me.aheadlcx.net.interceptor.GithubTokenInterceptor
+import me.aheadlcx.jetpack.net.interceptor.GithubTokenInterceptor
+import me.aheadlcx.net.adapter.FlowCallAdapterFactory
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

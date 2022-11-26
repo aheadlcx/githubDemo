@@ -2,8 +2,7 @@ package me.aheadlcx.jetpack.net.service.weather
 
 
 import com.ihsanbal.logging.LoggingInterceptor
-import me.aheadlcx.jetpack.net.flow.FlowCallAdapterFactory
-import me.aheadlcx.jetpack.net.service.weather.Interceptor.CommonParamsInterceptor
+import me.aheadlcx.net.adapter.FlowCallAdapterFactory
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

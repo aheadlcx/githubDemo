@@ -1,10 +1,10 @@
-package me.aheadlcx.jetpack.net.flow
+package me.aheadlcx.net.adapter
 
 import kotlinx.coroutines.flow.Flow
-import me.aheadlcx.jetpack.net.flow.async.AsyncBodyFlowCallAdapter
-import me.aheadlcx.jetpack.net.flow.async.AsyncResponseFlowCallAdapter
-import me.aheadlcx.jetpack.net.flow.sync.BodyFlowCallAdapter
-import me.aheadlcx.jetpack.net.flow.sync.ResponseFlowCallAdapter
+import me.aheadlcx.net.adapter.async.AsyncBodyFlowCallAdapter
+import me.aheadlcx.net.adapter.async.AsyncResponseFlowCallAdapter
+import me.aheadlcx.net.adapter.sync.BodyFlowCallAdapter
+import me.aheadlcx.net.adapter.sync.ResponseFlowCallAdapter
 import retrofit2.CallAdapter
 import retrofit2.Response
 import retrofit2.Retrofit

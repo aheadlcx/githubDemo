@@ -50,7 +50,6 @@ private fun parseOverridingUrl(invokeMethod: Method): HttpUrl {
             ?: invokeMethod.declaringClass.getAnnotation(BaseUrl::class.java)?.value
         baseUrlStr?.let {
             if (!it.endsWith("/")) throw IllegalStateException("base url must be ended with /. please fix the api interface #${invokeMethod.declaringClass.name}.${invokeMethod.name}#'s base url:$it")
-//            HttpUrl.get(it).let { httpUrl ->
             it.toHttpUrl().let { httpUrl ->
                 cachedOverridingUrls[invokeMethod] = httpUrl
                 return@parseOverridingUrl httpUrl
