@@ -5,8 +5,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:id="@+id/txtClick"
+        android:gravity="center"
+        android:text="点击测试"
+        android:layout_height="50dp"/>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:id="@+id/txtClickUser"
+        android:gravity="center"
+        android:text="点击user"
+        android:layout_height="50dp"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/baseRecycler"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </LinearLayout>
