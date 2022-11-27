@@ -7,8 +7,6 @@ import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
-import com.kongzue.tabbar.Tab
-import com.kongzue.tabbar.interfaces.OnTabChangeListener
 import me.aheadlcx.github.R
 import me.aheadlcx.github.databinding.ActivityGithubmainBinding
 import me.aheadlcx.github.databinding.ActivityMainBinding

@@ -27,6 +27,7 @@ abstract class BaseFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val bindingView = getBindingView(inflater, container)
+        onCreateView(bindingView.rootView)
         return bindingView
     }
 
@@ -36,7 +37,7 @@ abstract class BaseFragment : Fragment() {
 //    ) : ViewModelProvider.Factory {
 //        override fun <T : ViewModel?> create(modelClass: Class<T>): T = factory() as T
 //    }
-//
+////
 //    inline fun <reified VM : ViewModel> Fragment.viewModel(
 //        noinline factory: () -> VM,
 //    ): Lazy<VM> = viewModels { ParamViewModelFactory(factory) }
@@ -48,6 +49,10 @@ abstract class BaseFragment : Fragment() {
     open fun actionCopy() {
 
     }
+
+    open protected fun onCreateView(mainView: View?){}
+
+
 
     abstract fun getBindingView(inflater: LayoutInflater, container: ViewGroup?): View
 

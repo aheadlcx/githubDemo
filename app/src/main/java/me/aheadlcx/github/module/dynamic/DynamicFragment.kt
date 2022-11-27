@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import me.aheadlcx.github.databinding.FragmentDynamicBinding
 import me.aheadlcx.github.databinding.FragmentLoginOauthBinding
 import me.aheadlcx.github.module.base.BaseFragment
+import me.aheadlcx.github.module.base.autoCleared
 
 /**
  * Description:
@@ -14,6 +15,8 @@ import me.aheadlcx.github.module.base.BaseFragment
  */
 class DynamicFragment: BaseFragment() {
     private lateinit var binding: FragmentDynamicBinding
+
+
     override fun getBindingView(inflater: LayoutInflater, container: ViewGroup?): View {
         binding = FragmentDynamicBinding.inflate(inflater)
         return binding.root
