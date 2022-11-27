@@ -1,8 +1,10 @@
 package me.aheadlcx.github
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.webkit.WebResourceRequest
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -26,7 +28,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         const val TAG = "MainActivity"
-        const val redirect_uri = "https://www.163.com/"
+//        const val redirect_uri = "https://www.163.com/"
+        const val redirect_uri = "aheadlcx://github/authed"
         const val client_id = "84d56022a54eeb45eecf"
         const val client_secret = "af29bf5a1dfff246d342eef8e6db1e4106f9777e"
         const val url = "https://github.com/login/oauth/authorize?client_id=${client_id}" +
@@ -64,6 +67,11 @@ class MainActivity : AppCompatActivity() {
             }
             binding.webView.loadUrl(url)
         }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
     }
 
     private fun test() {
@@ -141,16 +149,31 @@ class MainActivity : AppCompatActivity() {
     }
 
     class MyWebViewClient(val activity: MainActivity) : WebViewClient() {
-        override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
-            view!!.loadUrl(url!!)
-            Log.i(TAG, "shouldOverrideUrlLoading: url=$url")
-            Log.i(TAG, "shouldOverrideUrlLoading: redirect_uri=$redirect_uri")
-            if (url.startsWith(redirect_uri) && url.startsWith(redirect_uri + "?code=")) {
-                val code: String = url.replace(redirect_uri + "?code=", "")
-                activity.onHandleGetCode(code)
+        override fun shouldOverrideUrlLoading(
+            view: WebView?,
+            request: WebResourceRequest?
+        ): Boolean {
+            if (request != null && request.url != null &&
+                request.url.toString().startsWith(redirect_uri)) {
+                val code = request.url.getQueryParameter("code")
+                if (code != null) {
+                    activity.onHandleGetCode(code)
+                };
+                return true
             }
-            return true
+            return false
         }
+
+//        override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
+//            view!!.loadUrl(url!!)
+//            Log.i(TAG, "shouldOverrideUrlLoading: url=$url")
+//            Log.i(TAG, "shouldOverrideUrlLoading: redirect_uri=$redirect_uri")
+//            if (url.startsWith(redirect_uri) && url.startsWith(redirect_uri + "?code=")) {
+//                val code: String = url.replace(redirect_uri + "?code=", "")
+//                activity.onHandleGetCode(code)
+//            }
+//            return true
+//        }
     }
 
     override fun onDestroy() {
