@@ -1,15 +1,22 @@
 package me.aheadlcx.github.api;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import me.aheadlcx.github.config.AppConfig;
+
 /**
  * Description:
  * author: aheadlcx
  * Date:2022/11/15 2:42 下午
  */
 public class TokenBeanReq {
-   private String client_id;
-   private String client_secret;
+   private List<String> scopes = Arrays.asList("user", "repo", "gist", "notifications");
+   private String client_id = AppConfig.client_id;
+   private String client_secret = AppConfig.client_secret;
    private String code;
-   private String redirect_uri;
+   private String redirect_uri = AppConfig.redirect_uri;
 
    public String getClient_id() {
       return client_id;
@@ -46,4 +53,5 @@ public class TokenBeanReq {
       this.redirect_uri = redirect_uri;
       return this;
    }
+
 }

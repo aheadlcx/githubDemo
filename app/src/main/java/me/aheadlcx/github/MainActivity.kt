@@ -180,6 +180,8 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
     }
 
+
+
     /**
      * A native method that is implemented by the 'github' native library,
      * which is packaged with this application.
