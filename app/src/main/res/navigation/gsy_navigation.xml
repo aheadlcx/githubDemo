@@ -9,9 +9,9 @@
         android:name="me.aheadlcx.github.module.WelcomeFragment"
         android:label="WelcomeFragment"
         tools:layout="@layout/fragment_welcome">
-        <!--        <action-->
-        <!--            android:id="@+id/action_nav_wel_to_main"-->
-        <!--            app:destination="@id/mainActivity" />-->
+        <action
+            android:id="@+id/action_nav_wel_to_main"
+            app:destination="@id/mainActivity" />
         <action
             android:id="@+id/action_nav_wel_to_login"
             app:destination="@id/loginOAuthFragment" />
@@ -22,16 +22,15 @@
         android:name="me.aheadlcx.github.module.login.LoginOAuthFragment"
         android:label="loginOAuthFragment"
         tools:layout="@layout/fragment_login_oauth">
-        <!--        <action-->
-        <!--            android:id="@+id/action_nav_login_to_main"-->
-        <!--            app:destination="@id/mainActivity" />-->
+        <action
+            android:id="@+id/action_nav_login_to_main"
+            app:destination="@id/mainActivity" />
     </fragment>
 
-    <!--    <activity-->
-    <!--        android:id="@+id/mainActivity"-->
-    <!--        android:name="com.shuyu.github.kotlin.module.main.MainActivity"-->
-    <!--        android:label="activity_main"-->
-    <!--        tools:layout="@layout/activity_main">-->
-    <!--    </activity>-->
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="me.aheadlcx.github.module.main.GithubMainActivity"
+        android:label="activity_main"
+        tools:layout="@layout/activity_main"></activity>
 
 </navigation>

@@ -10,8 +10,10 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import me.aheadlcx.github.R
 import me.aheadlcx.github.config.AppConfig
 import me.aheadlcx.github.databinding.FragmentLoginOauthBinding
 import me.aheadlcx.github.module.base.BaseFragment
@@ -43,9 +45,11 @@ class LoginOAuthFragment : BaseFragment() {
             if (it != null && it == true) {
                 //登录成功
                 Log.i(TAG, "onViewCreated: login.success.${it}")
+                navigationPopUpTo(view, null, R.id.action_nav_login_to_main, true, true)
             } else {
                 //登录失败
                 Log.i(TAG, "onViewCreated:.failed")
+                Toast.makeText(activity, getString(R.string.loginFailed), Toast.LENGTH_LONG).show()
             }
         })
         initWeb()

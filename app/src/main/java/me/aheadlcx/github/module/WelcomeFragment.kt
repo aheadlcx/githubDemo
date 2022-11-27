@@ -12,6 +12,7 @@ import me.aheadlcx.github.common.net.GsonUtils
 import me.aheadlcx.github.config.AppConfig
 import me.aheadlcx.github.databinding.FragmentLoginOauthBinding
 import me.aheadlcx.github.databinding.FragmentWelcomeBinding
+import me.aheadlcx.github.model.AppGlobalModel
 import me.aheadlcx.github.module.base.BaseFragment
 import me.aheadlcx.github.utils.GSYPreference
 
@@ -40,7 +41,7 @@ class WelcomeFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         Handler(Looper.getMainLooper()).postDelayed({
             goNext(view)
-        }, 2000)
+        }, 200)
     }
 
     private fun goNext(view: View) {
@@ -54,9 +55,10 @@ class WelcomeFragment : BaseFragment() {
             } else {
                 ///读取用户数据
                 val user = GsonUtils.parserJsonToBean(userInfoStorage, User::class.java)
-                UserConversion.cloneDataFromUser(context, user, appGlobalModel.userObservable)
+                AppGlobalModel.userObservable = user
+//                UserConversion.cloneDataFromUser(context, user, appGlobalModel.userObservable)
                 //去主页
-//                navigationPopUpTo(view, null, R.id.action_nav_wel_to_main, true, true)
+                navigationPopUpTo(view, null, R.id.action_nav_wel_to_main, true, true)
             }
 
         }

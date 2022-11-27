@@ -7,11 +7,6 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <ProgressBar
-        android:id="@+id/oauth_webview_loadingBar"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_gravity="center" />
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -24,6 +19,12 @@
             android:id="@+id/oauth_webview"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+
+        <ProgressBar
+            android:id="@+id/oauth_webview_loadingBar"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center" />
 
 
     </FrameLayout>

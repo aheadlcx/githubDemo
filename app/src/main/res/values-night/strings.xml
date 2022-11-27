@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">githubApp</string>
-    <string name="loginFailed">login failed</string>
+    <string name="loginFailed">登录失败</string>
 </resources>
