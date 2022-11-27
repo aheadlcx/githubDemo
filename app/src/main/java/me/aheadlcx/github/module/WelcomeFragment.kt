@@ -6,7 +6,9 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.shuyu.github.kotlin.model.bean.User
 import me.aheadlcx.github.R
+import me.aheadlcx.github.common.net.GsonUtils
 import me.aheadlcx.github.config.AppConfig
 import me.aheadlcx.github.databinding.FragmentLoginOauthBinding
 import me.aheadlcx.github.databinding.FragmentWelcomeBinding
@@ -51,8 +53,8 @@ class WelcomeFragment : BaseFragment() {
                 navigationPopUpTo(view, null, R.id.action_nav_wel_to_login, false, true)
             } else {
                 ///读取用户数据
-//                val user = GsonUtils.parserJsonToBean(userInfoStorage, User::class.java)
-//                UserConversion.cloneDataFromUser(context, user, appGlobalModel.userObservable)
+                val user = GsonUtils.parserJsonToBean(userInfoStorage, User::class.java)
+                UserConversion.cloneDataFromUser(context, user, appGlobalModel.userObservable)
                 //去主页
 //                navigationPopUpTo(view, null, R.id.action_nav_wel_to_main, true, true)
             }
