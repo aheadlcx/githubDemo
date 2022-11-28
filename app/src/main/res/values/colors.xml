@@ -14,7 +14,9 @@
     <color name="red">#88FF1100</color>
     <color name="transparent">#00000000</color>
 
-    <color name="colorPrimary">#313335</color>
+    <color name="colorPrimary">#371E6F</color>
+    <color name="colorPrimaryDark">#5D3DA6</color>
+    <color name="colorAccent">#887CA3</color>
     <color name="subTextColor">#959595</color>
 
 </resources>

@@ -96,6 +96,8 @@ dependencies {
     implementation "com.github.bumptech.glide:glide:${rootProject.image_load}"
     annotationProcessor "com.github.bumptech.glide:compiler:${rootProject.image_load}"
 
+    //permission
+    implementation 'com.yanzhenjie:permission:2.0.3'
 //    def lifecycle_version = "2.2.0"
 //    def arch_version = "2.1.0"
 //    //// ViewModel

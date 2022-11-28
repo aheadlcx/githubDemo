@@ -3,10 +3,13 @@ package me.aheadlcx.github.module
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.shuyu.github.kotlin.model.bean.User
+import com.yanzhenjie.permission.AndPermission
+import com.yanzhenjie.permission.runtime.Permission
 import me.aheadlcx.github.R
 import me.aheadlcx.github.common.net.GsonUtils
 import me.aheadlcx.github.config.AppConfig
@@ -22,6 +25,11 @@ import me.aheadlcx.github.utils.GSYPreference
  * Date:2022/11/27 3:10 下午
  */
 class WelcomeFragment : BaseFragment() {
+
+    companion object {
+        private const val TAG = "WelcomeFragment"
+    }
+
     private lateinit var binding: FragmentWelcomeBinding
 
     /***
@@ -40,8 +48,19 @@ class WelcomeFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Handler(Looper.getMainLooper()).postDelayed({
-            goNext(view)
+            checkPermission()
         }, 200)
+    }
+
+    fun checkPermission() {
+        AndPermission.with(this)
+            .runtime()
+            .permission(Permission.Group.STORAGE)
+            .onGranted {
+                goNext(requireView())
+            }.onDenied {
+                Log.i(TAG, "checkPermission: onDenied")
+            }.start()
     }
 
     private fun goNext(view: View) {

@@ -4,6 +4,8 @@
     package="me.aheadlcx.github">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <permission-group android:name="${applicationId}.andpermission"/>
     <application
         android:name="me.aheadlcx.GithubApp"
         android:allowBackup="true"

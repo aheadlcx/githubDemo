@@ -1,24 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <TextView
-        android:layout_width="match_parent"
         android:id="@+id/txtClick"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:visibility="gone"
         android:gravity="center"
-        android:text="点击测试"
-        android:layout_height="50dp"/>
+        android:text="点击测试" />
 
 
     <TextView
-        android:layout_width="match_parent"
         android:id="@+id/txtClickUser"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
         android:gravity="center"
-        android:text="点击user"
-        android:layout_height="50dp"/>
+        android:text="点击user" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
