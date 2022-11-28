@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">githubApp</string>
     <string name="loginFailed">login failed</string>
+    <string name="loginSuccess">login success</string>
     <string name="loading_prepare">加载中准备</string>
 
 </resources>

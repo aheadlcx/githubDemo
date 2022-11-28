@@ -14,6 +14,7 @@ import me.aheadlcx.github.module.base.BaseActivity
 import me.aheadlcx.github.module.dynamic.DynamicFragment
 import me.aheadlcx.github.module.mine.MineFragment
 import me.aheadlcx.github.module.trend.TrendFragment
+import me.aheadlcx.github.test.TestFragment
 import me.aheadlcx.github.ui.adapter.FragmentPagerViewAdapter
 
 /**
@@ -37,11 +38,15 @@ class GithubMainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityGithubmainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        mainFragmentList = listOf(DynamicFragment(), TrendFragment(), MineFragment())
+        mainFragmentList = listOf(
+            TestFragment(), DynamicFragment(), TrendFragment(),
+            MineFragment()
+        )
         initViewPager()
     }
 
     private fun initViewPager() {
+        tabs.add("测试")
         tabs.add("动态")
         tabs.add("流行")
         tabs.add("我的")

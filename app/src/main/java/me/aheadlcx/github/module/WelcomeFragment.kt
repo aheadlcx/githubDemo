@@ -68,13 +68,15 @@ class WelcomeFragment : BaseFragment() {
             ///去登录页
             navigationPopUpTo(view, null, R.id.action_nav_wel_to_login, false, true)
         } else {
+            // TODO: 需要考虑 token 过期么
             if (userInfoStorage.isEmpty()) {
+//            if (accessTokenStorage.isEmpty()) {
                 ///去登录页
                 navigationPopUpTo(view, null, R.id.action_nav_wel_to_login, false, true)
             } else {
                 ///读取用户数据
-                val user = GsonUtils.parserJsonToBean(userInfoStorage, User::class.java)
-                AppGlobalModel.userObservable = user
+//                val user = GsonUtils.parserJsonToBean(userInfoStorage, User::class.java)
+//                AppGlobalModel.userObservable = user
 //                UserConversion.cloneDataFromUser(context, user, appGlobalModel.userObservable)
                 //去主页
                 navigationPopUpTo(view, null, R.id.action_nav_wel_to_main, true, true)

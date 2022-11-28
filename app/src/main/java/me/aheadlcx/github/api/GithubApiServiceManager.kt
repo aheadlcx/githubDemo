@@ -1,6 +1,7 @@
 package me.aheadlcx.github.api
 
 import com.ihsanbal.logging.LoggingInterceptor
+import me.aheadlcx.github.service.RepoService
 import me.aheadlcx.github.service.UserService
 import me.aheadlcx.net.interceptor.BaseUrlInterceptor
 import me.aheadlcx.jetpack.net.interceptor.GithubTokenInterceptor
@@ -35,4 +36,5 @@ object GithubApiServiceManager {
         .build()
     val gitHubService: GitHubServiceKotlin = retrofit.create(GitHubServiceKotlin::class.java)
     val userService: UserService = retrofit.create(UserService::class.java)
+    val repoService: RepoService = retrofit.create(RepoService::class.java)
 }

@@ -10,9 +10,9 @@
         android:id="@+id/txtClick"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:visibility="gone"
         android:gravity="center"
         android:text="点击测试" />
+    <!--        android:visibility=""-->
 
 
     <TextView

@@ -18,10 +18,6 @@ interface GitHubServiceKotlin {
     @GET("user")
     suspend fun getUserInfoSub(@Header("Authorization") auth: String?): UserInfo
 
-    @Headers("Accept:application/vnd.github+json")
-    @GET("user")
-    fun getUserInfoByFlow(@Header("Authorization") auth: String?): Flow<UserInfo>
-
     @Headers("Accept:application/json")
     @POST("login/oauth/access_token")
     @BaseUrl("https://github.com/")

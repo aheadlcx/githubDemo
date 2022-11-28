@@ -4,13 +4,14 @@ import android.util.Log
 import com.shuyu.github.kotlin.model.bean.Event
 import com.shuyu.github.kotlin.model.bean.User
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.*
 import me.aheadlcx.github.api.GithubApiServiceManager
+import me.aheadlcx.github.common.net.GsonUtils
+import me.aheadlcx.github.config.AppConfig
 import me.aheadlcx.github.module.dynamic.DynamicViewModel
+import me.aheadlcx.github.utils.GSYPreference
 import java.util.ArrayList
+import kotlinx.coroutines.flow.flatMap as flowFlatMap
 
 /**
  * Description:
@@ -19,8 +20,13 @@ import java.util.ArrayList
  */
 class UserRepository {
     companion object {
-        private const val TAG = "DynamicViewModel"
+        private const val TAG = "UserRepository"
     }
+
+    /**
+     * 登录用户的 SharedPreferences 委托
+     */
+    private var userInfoStorage: String by GSYPreference(AppConfig.USER_INFO, "")
 
     suspend fun getReceivedEvent(page: Int = 1): Flow<ArrayList<Event>> {
         val username = "aheadlcx"
@@ -43,5 +49,34 @@ class UserRepository {
             }
         return flow
     }
+
+    suspend fun getPersonUserInfo(userName: String? = null): Flow<User> {
+        val isLoginUser = userName == null
+        //根据是否有用户名，获取第三方用户数据或者当前用户数据
+        val userFlow = if (isLoginUser) {
+            val personInfoFlow = GithubApiServiceManager.userService.getPersonInfo(true)
+            personInfoFlow
+        } else {
+            val userFlow = GithubApiServiceManager.userService.getUser(true, userName!!)
+            userFlow
+        }
+        return doUserInfoFlat(userFlow, isLoginUser)
+    }
+
+    private suspend fun doUserInfoFlat(userFlow: Flow<User>, loginUser: Boolean): Flow<User> {
+        val userFlow = userFlow
+            .flowOn(Dispatchers.IO)
+            .catch { cause ->
+                Log.i(TAG, "doUserInfoFlat.errorMsg: ${cause.message}")
+            }
+            .map {
+                if (loginUser) {
+                    userInfoStorage = GsonUtils.toJsonString(it)
+                }
+                it
+            }
+        return userFlow
+    }
+
 
 }

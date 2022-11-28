@@ -102,7 +102,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun getUserInfoFlow() {
         lifecycleScope.launch {
-            GithubApiServiceManager.gitHubService.getUserInfoByFlow(getOauth())
+            GithubApiServiceManager.userService.getUserInfoByFlow(getOauth())
                 .flowOn(Dispatchers.IO)
                 .catch { cause ->
                     Log.i(TAG, "getUserInfoFlow:catch errorMsg=" + cause.message)

@@ -46,6 +46,7 @@ class LoginOAuthFragment : BaseFragment() {
                 //登录成功
                 Log.i(TAG, "onViewCreated: login.success.${it}")
                 navigationPopUpTo(view, null, R.id.action_nav_login_to_main, true, true)
+                Toast.makeText(activity, getString(R.string.loginSuccess), Toast.LENGTH_LONG).show()
             } else {
                 //登录失败
                 Log.i(TAG, "onViewCreated:.failed")
