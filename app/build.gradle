@@ -91,10 +91,10 @@ dependencies {
 
 //    implementation "io.github.cymchad:BaseRecyclerViewAdapterHelper:3.0.11"
     implementation "io.github.cymchad:BaseRecyclerViewAdapterHelper:4.0.0-beta04"
-    ///loading spinkit
-//    implementation "com.github.ybq:Android-SpinKit:${rootProject.spinkit_version}"
-    ///recycler adapter
-//    implementation "com.github.CarGuo.LazyRecyclerAdapter:CommonRecycler-Kotlin:${rootProject.recycler_common_version}"
+
+    //glide
+    implementation "com.github.bumptech.glide:glide:${rootProject.image_load}"
+    annotationProcessor "com.github.bumptech.glide:compiler:${rootProject.image_load}"
 
 //    def lifecycle_version = "2.2.0"
 //    def arch_version = "2.1.0"

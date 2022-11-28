@@ -10,6 +10,7 @@ import androidx.core.text.inSpans
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.shuyu.github.kotlin.model.bean.Event
+import me.aheadlcx.github.common.utils.CommonUtils
 import me.aheadlcx.github.databinding.LayoutEventItemBinding
 import me.aheadlcx.github.model.ui.EventUIModel
 
@@ -38,7 +39,10 @@ class DynamicAdapter : BaseQuickAdapter<EventUIModel?, DynamicAdapter.VH>() {
 
     protected override fun onBindViewHolder(holder: VH, position: Int, item: EventUIModel?) {
         holder.viewBinding.eventUIModel = item
-        Log.i(TAG, "onBindViewHolder:position=${position}")
+        val eventUIModel = getItem(position)
+        val imageUrl = eventUIModel?.image ?: ""
+        Log.i(TAG, "onBindViewHolder:position=${position},imageUrl=${imageUrl}")
+        CommonUtils.loadUserHeaderImage(holder.viewBinding.eventUserImg, imageUrl)
     }
 
 }

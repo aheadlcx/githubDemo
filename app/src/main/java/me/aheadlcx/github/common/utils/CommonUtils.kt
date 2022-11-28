@@ -4,8 +4,11 @@ import android.content.Context
 import android.graphics.Point
 import android.widget.ImageView
 import androidx.core.net.toUri
+import com.shuyu.github.kotlin.common.gsyimageloader.GSYImageLoaderManager
+import com.shuyu.github.kotlin.common.gsyimageloader.GSYLoadOption
 import me.aheadlcx.GithubApp
 import me.aheadlcx.github.R
+import me.aheadlcx.github.common.gsyimageloader.gsygiideloader.BlurTransformation
 import me.aheadlcx.github.config.AppConfig
 import java.text.SimpleDateFormat
 import java.util.*
@@ -30,29 +33,29 @@ object CommonUtils {
     /**
      * 加载用户头像
      */
-//    fun loadUserHeaderImage(imageView: ImageView, url: String, size: Point = Point(50.dp, 50.dp)) {
-//        val option = GSYLoadOption()
-//                .setDefaultImg(R.drawable.logo)
-//                .setErrorImg(R.drawable.logo)
-//                .setCircle(true)
-//                .setSize(size)
-//                .setUri(url)
-//        GSYImageLoaderManager.sInstance.imageLoader().loadImage(option, imageView, null)
-//    }
+    fun loadUserHeaderImage(imageView: ImageView, url: String, size: Point = Point(50.dp, 50.dp)) {
+        val option = GSYLoadOption()
+                .setDefaultImg(R.drawable.logo)
+                .setErrorImg(R.drawable.logo)
+                .setCircle(true)
+                .setSize(size)
+                .setUri(url)
+        GSYImageLoaderManager.sInstance.imageLoader().loadImage(option, imageView, null)
+    }
 
     /**
      * 加载高斯模糊图片
      */
-//    fun loadImageBlur(imageView: ImageView, url: String) {
-//        val process = BlurTransformation()
-//        val option = GSYLoadOption()
-//                .setDefaultImg(R.drawable.logo)
-//                .setErrorImg(R.drawable.logo)
-//                .setUri(url)
-//                .setTransformations(process)
-//
-//        GSYImageLoaderManager.sInstance.imageLoader().loadImage(option, imageView, null)
-//    }
+    fun loadImageBlur(imageView: ImageView, url: String) {
+        val process = BlurTransformation()
+        val option = GSYLoadOption()
+                .setDefaultImg(R.drawable.logo)
+                .setErrorImg(R.drawable.logo)
+                .setUri(url)
+                .setTransformations(process)
+
+        GSYImageLoaderManager.sInstance.imageLoader().loadImage(option, imageView, null)
+    }
 
 
     fun getDateStr(date: Date?): String {

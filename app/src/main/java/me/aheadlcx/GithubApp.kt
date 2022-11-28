@@ -1,6 +1,8 @@
 package me.aheadlcx
 
 import android.app.Application
+import com.shuyu.github.kotlin.common.gsyimageloader.GSYImageLoaderManager
+import com.shuyu.github.kotlin.common.gsyimageloader.gsygiideloader.GSYGlideImageLoader
 import kotlin.properties.Delegates
 
 /**
@@ -16,6 +18,8 @@ class GithubApp : Application() {
     override fun onCreate() {
         super.onCreate()
         instance = this
-
+        ///初始化图片加载
+        ///初始化图片加载
+        GSYImageLoaderManager.initialize(GSYGlideImageLoader(this))
     }
 }

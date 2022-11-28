@@ -17,5 +17,7 @@ ext{
     tabbar_version = '1.2.5'
     recycler_common_version = 'v4.0.6'
     spinkit_version = '1.2.0'
+//    image_load = '4.9.0'
+    image_load = '4.14.2'
 
 }
