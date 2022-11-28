@@ -47,7 +47,6 @@ class DynamicViewModel:BaseViewModel() {
                 .collect{
                     Log.i(TAG, "getReceivedEvent:.success.size=${it.size}" )
                     eventUiModelLiveData.value = it
-//                    Log.i(TAG, "getReceivedEvent:.success" + GsonUtils.toJsonString(it))
                 }
         }
     }
@@ -63,7 +62,6 @@ class DynamicViewModel:BaseViewModel() {
 
                 }
                 .collect{
-                    Log.i(TAG, "getFollowers:.success" )
                     Log.i(TAG, "getFollowers:.success" + GsonUtils.toJsonString(it))
                 }
 
