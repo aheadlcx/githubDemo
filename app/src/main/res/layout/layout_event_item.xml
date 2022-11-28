@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="eventUIModel"
+            type="me.aheadlcx.github.model.ui.EventUIModel" />
+
+    </data>
+
+    <androidx.cardview.widget.CardView style="@style/whiteCard"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp">
+
+
+            <ImageView
+                android:id="@+id/event_user_img"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                />
+
+            <TextView
+                android:id="@+id/event_user_name"
+                android:layout_width="wrap_content"
+                android:text="@{eventUIModel.username}"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/event_user_img"
+                android:layout_marginStart="10dp"
+                android:layout_toEndOf="@+id/event_user_img"
+                android:singleLine="true"
+                android:textSize="@dimen/smallTextSize" />
+
+            <TextView
+                android:id="@+id/event_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:text="@{eventUIModel.time}"
+                android:singleLine="true"
+                android:textSize="@dimen/smallTextSize" />
+
+            <TextView
+                android:id="@+id/event_action"
+                android:layout_width="wrap_content"
+                android:text="@{eventUIModel.action}"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/event_user_img"
+                android:layout_margin="5dp"
+                android:textSize="@dimen/smallTextSize" />
+
+
+            <TextView
+                android:id="@+id/event_des"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{eventUIModel.des}"
+                android:layout_below="@+id/event_action"
+                android:layout_margin="5dp"
+                android:visibility="@{eventUIModel.des.length() > 0 ? View.VISIBLE : View.GONE}"
+                android:maxLines="3"
+                android:textSize="@dimen/smallTextSize"
+                />
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+</layout>

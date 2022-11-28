@@ -27,6 +27,7 @@ interface UserService {
         @Query("page") page: Int,
         @Query("per_page") per_page: Int = AppConfig.PAGE_SIZE
     ): Flow<ArrayList<Event>>
+//    @Query("per_page") per_page: Int = AppConfig.PAGE_SIZE
 
 
     @GET("users/{user}/followers")

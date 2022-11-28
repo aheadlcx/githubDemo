@@ -63,7 +63,6 @@ class LoginOAuthFragment : BaseFragment() {
         settings.displayZoomControls = false
         settings.domStorageEnabled = true
         settings.layoutAlgorithm = WebSettings.LayoutAlgorithm.NARROW_COLUMNS
-        settings.setAppCacheEnabled(true)
 
         val webViewClient: WebViewClient = object : WebViewClient() {
 

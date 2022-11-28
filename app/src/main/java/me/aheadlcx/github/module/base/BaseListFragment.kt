@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
  */
 abstract class BaseListFragment<R: BaseListViewModel> :BaseFragment(),
     AdapterView.OnItemClickListener {
+    // TODO: toDelete
 //    protected var normalAdapterManager by autoCleared<BindingDataRecyclerManager>()
     private lateinit var baseViewModel: R
 
