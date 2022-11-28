@@ -74,7 +74,7 @@ class DynamicViewModel : BaseViewModel() {
                     } else {
                         eventUiModelPageLiveData.value = it
                     }
-                    if (it == null || it.size == 0){
+                    if (it == null || it.size == 0) {
                         eventDataState.value = 1
                     } else {
                         eventDataState.value = 2
