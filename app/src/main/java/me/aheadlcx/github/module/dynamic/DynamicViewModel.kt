@@ -18,24 +18,47 @@ import me.aheadlcx.github.repository.UserRepository
  * author: aheadlcx
  * Date:2022/11/27 11:12 下午
  */
-class DynamicViewModel:BaseViewModel() {
+class DynamicViewModel : BaseViewModel() {
 
-    companion object{
+    companion object {
         private const val TAG = "DynamicViewModel"
     }
-    var page = 1
+
+    internal class PageInfo {
+        var pageIndexStart = 1// 第一页
+        var page = pageIndexStart
+        fun nextPage() {
+            page++
+        }
+
+        fun reset() {
+            page = pageIndexStart
+        }
+
+        val isFirstPage: Boolean
+            get() = page == pageIndexStart
+    }
+
+    private val pageInfo = PageInfo()
 
     private val repo: UserRepository = UserRepository()
     val eventUiModelLiveData = MutableLiveData<List<EventUIModel>>()
-    fun getReceivedEvent(page:Int = 1){
+    val eventUiModelPageLiveData = MutableLiveData<List<EventUIModel>>()
+
+    val eventDataState = MutableLiveData<Int>()
+    val refreshLiveData = MutableLiveData<Boolean>()
+    fun getReceivedEvent(page: Int = 1) {
         Log.i(TAG, "getReceivedEvent:begin")
         viewModelScope.launch {
             repo.getReceivedEvent(page)
                 .catch {
                     Log.i(TAG, "getReceivedEvent:error")
-                }.onCompletion {  cause ->
-                    Log.i(TAG, "getReceivedEvent: onCompletion" + (cause?.message?:"cause.is.null"))
-
+                }.onCompletion { cause ->
+                    Log.i(
+                        TAG,
+                        "getReceivedEvent: onCompletion" + (cause?.message ?: "cause.is.null")
+                    )
+                    refreshLiveData.value = false
                 }
                 .map {
                     val eventUiList = ArrayList<EventUIModel>()
@@ -44,28 +67,49 @@ class DynamicViewModel:BaseViewModel() {
                     }
                     eventUiList
                 }
-                .collect{
-                    Log.i(TAG, "getReceivedEvent:.success.size=${it.size}" )
-                    eventUiModelLiveData.value = it
+                .collect {
+                    Log.i(TAG, "getReceivedEvent:.success.size=${it.size}")
+                    if (pageInfo.isFirstPage) {
+                        eventUiModelLiveData.value = it
+                    } else {
+                        eventUiModelPageLiveData.value = it
+                    }
+                    if (it == null || it.size == 0){
+                        eventDataState.value = 1
+                    } else {
+                        eventDataState.value = 2
+                    }
+                    pageInfo.nextPage()
                 }
         }
     }
 
-    fun getFollowers(page:Int = 1){
+    fun getFollowers(page: Int = 1) {
         Log.i(TAG, "getFollowers:begin")
         viewModelScope.launch {
             repo.getFollowers(page)
                 .catch {
                     Log.i(TAG, "getFollowers:error")
-                }.onCompletion {  cause ->
-                    Log.i(TAG, "getFollowers: onCompletion" + (cause?.message?:"cause.is.null"))
+                }.onCompletion { cause ->
+                    Log.i(TAG, "getFollowers: onCompletion" + (cause?.message ?: "cause.is.null"))
 
                 }
-                .collect{
+                .collect {
                     Log.i(TAG, "getFollowers:.success" + GsonUtils.toJsonString(it))
                 }
 
         }
+    }
+
+    fun onRefresh() {
+        Log.i(TAG, "onRefresh: ")
+        pageInfo.reset()
+        getReceivedEvent()
+    }
+
+    fun loadNextPage() {
+        Log.i(TAG, "loadNextPage: ")
+        getReceivedEvent(pageInfo.page)
     }
 
 }

@@ -1,5 +1,6 @@
 package me.aheadlcx.github.module.dynamic
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,12 +9,15 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.chad.baserecyclerviewadapterhelper.activity.headerfooter.adapter.HeaderAdapter
 import com.chad.library.adapter.base.QuickAdapterHelper
+import com.chad.library.adapter.base.loadState.LoadState
 import com.chad.library.adapter.base.loadState.trailing.TrailingLoadStateAdapter.OnTrailingListener
 import me.aheadlcx.github.databinding.FragmentDynamicBinding
 import me.aheadlcx.github.model.ui.EventUIModel
 import me.aheadlcx.github.module.base.BaseFragment
 import me.aheadlcx.github.ui.adapter.DynamicAdapter
+import java.util.*
 
 /**
  * Description:
@@ -51,9 +55,23 @@ class DynamicFragment : BaseFragment() {
         }
 
         initRecycleView()
-        addHeadView()
-        initData()
+//        addHeadView()
         initLiveData()
+        initRefreshLayout()
+        initData()
+    }
+
+    private fun initRefreshLayout() {
+        binding.refreshLayout.setColorSchemeColors(Color.rgb(47, 223, 189))
+        binding.refreshLayout.setOnRefreshListener {
+            onRefresh()
+        }
+    }
+
+    private fun onRefresh() {
+        dynamicViewModel.onRefresh()
+        helper.trailingLoadState = LoadState.None
+
     }
 
     private fun initLiveData() {
@@ -63,12 +81,35 @@ class DynamicFragment : BaseFragment() {
                 mAdapter.submitList(data)
                 Log.i(TAG, "onChanged:data.size=${data?.size ?: -1}")
             }
-
+        })
+        dynamicViewModel.eventUiModelPageLiveData.observe(this.viewLifecycleOwner, object :
+            Observer<List<EventUIModel>> {
+            override fun onChanged(data: List<EventUIModel>?) {
+                if (data != null) {
+                    mAdapter.addAll(data)
+                    Log.i(TAG, "onChanged:data.size=${data?.size ?: -1}")
+                }
+            }
+        })
+        dynamicViewModel.eventDataState.observe(this.viewLifecycleOwner, object : Observer<Int> {
+            override fun onChanged(t: Int?) {
+                when {
+                    t == 1 -> helper.trailingLoadState = LoadState.NotLoading(true)
+                    t == 2 -> helper.trailingLoadState = LoadState.NotLoading(false)
+                }
+            }
+        })
+        dynamicViewModel.refreshLiveData.observe(this.viewLifecycleOwner, object
+            : Observer<Boolean> {
+            override fun onChanged(t: Boolean?) {
+                binding.refreshLayout.isRefreshing = t!!
+            }
         })
     }
 
     private fun initData() {
         request()
+        helper.trailingLoadState = LoadState.None
     }
 
     fun initRecycleView() {
@@ -80,15 +121,19 @@ class DynamicFragment : BaseFragment() {
         // 使用默认的"加载更多"的样式
         val loadMoreListener: OnTrailingListener = object : OnTrailingListener {
             override fun onLoad() {
-                request()
+                Log.i(TAG, "onLoad.more: ")
+                dynamicViewModel.loadNextPage()
             }
 
             override fun onFailRetry() {
+                Log.i(TAG, "onFailRetry: ")
                 request()
             }
 
             override fun isAllowLoading(): Boolean {
-                return true
+                val isAllowLoading = !binding.refreshLayout.isRefreshing
+                Log.i(TAG, "isAllowLoading: ${isAllowLoading}")
+                return isAllowLoading
             }
         }
         helper = QuickAdapterHelper.Builder(mAdapter)
@@ -105,11 +150,15 @@ class DynamicFragment : BaseFragment() {
     }
 
     private fun addHeadView() {
-//        val headerAdapter = HeaderAdapter()
-//        headerAdapter.setOnItemClickListener { _, _, _ ->
-//            addHeadView()
-//        }
-//        helper.addBeforeAdapter(0, headerAdapter)
+        val headerAdapter = HeaderAdapter()
+        headerAdapter.setOnItemClickListener { _, _, _ ->
+            onClickHeadView()
+        }
+        helper.addBeforeAdapter(0, headerAdapter)
+    }
+
+    private fun onClickHeadView() {
+        Log.i(TAG, "onClickHeadView: ")
     }
 
 
