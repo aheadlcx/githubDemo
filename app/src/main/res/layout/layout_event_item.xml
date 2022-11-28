@@ -34,6 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignBaseline="@+id/event_user_img"
                 android:layout_marginStart="10dp"
+                android:textColor="@color/colorPrimary"
                 android:layout_toEndOf="@+id/event_user_img"
                 android:singleLine="true"
                 android:textSize="@dimen/smallTextSize" />
@@ -44,12 +45,14 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:text="@{eventUIModel.time}"
+                android:textColor="@color/subTextColor"
                 android:singleLine="true"
                 android:textSize="@dimen/smallTextSize" />
 
             <TextView
                 android:id="@+id/event_action"
                 android:layout_width="wrap_content"
+                android:textColor="@color/colorPrimary"
                 android:text="@{eventUIModel.action}"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/event_user_img"
@@ -59,6 +62,7 @@
 
             <TextView
                 android:id="@+id/event_des"
+                android:textColor="@color/subTextColor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{eventUIModel.des}"

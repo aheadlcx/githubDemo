@@ -25,7 +25,7 @@ interface UserService {
         @Header("forceNetWork") forceNetWork: Boolean,
         @Path("user") user: String,
         @Query("page") page: Int,
-        @Query("per_page") per_page: Int = AppConfig.PAGE_SIZE
+        @Query("per_page") per_page: Int = 20
     ): Flow<ArrayList<Event>>
 //    @Query("per_page") per_page: Int = AppConfig.PAGE_SIZE
 
