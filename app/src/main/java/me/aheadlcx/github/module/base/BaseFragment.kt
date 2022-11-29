@@ -9,10 +9,12 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.*
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 
 /**
  * Description:
@@ -35,7 +37,7 @@ abstract class BaseFragment : Fragment() {
     class ParamViewModelFactory<VM : ViewModel>(
         private val factory: () -> VM,
     ) : ViewModelProvider.Factory {
-        override fun <T : ViewModel> create(modelClass: Class<T>): T =  factory() as T
+        override fun <T : ViewModel> create(modelClass: Class<T>): T = factory() as T
     }
 
     //
@@ -43,8 +45,32 @@ abstract class BaseFragment : Fragment() {
         noinline factory: () -> VM,
     ): Lazy<VM> = viewModels { ParamViewModelFactory(factory) }
 
-    open fun actionOpenByBrowser() {
 
+    inline fun <T> Flow<T>.launchAndCollectIn(
+        owner: LifecycleOwner,
+        minActiveState: Lifecycle.State = Lifecycle.State.STARTED,
+        crossinline action: suspend CoroutineScope.(T) -> Unit
+    ) = owner.lifecycleScope.launch {
+        owner.repeatOnLifecycle(minActiveState) {
+            collect {
+                action(it)
+            }
+        }
+    }
+
+    //仅仅适合使用 collect 函数，因为这个会重建
+    inline fun Fragment.launchAndRepeatWithViewLifecycle(
+        minActiveState: Lifecycle.State = Lifecycle.State.STARTED,
+        crossinline block: suspend CoroutineScope.() -> Unit
+    ) {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(minActiveState) {
+                block()
+            }
+        }
+    }
+
+    open fun actionOpenByBrowser() {
     }
 
     open fun actionCopy() {

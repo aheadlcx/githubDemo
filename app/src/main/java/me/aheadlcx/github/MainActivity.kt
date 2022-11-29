@@ -9,8 +9,12 @@ import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.onCompletion
@@ -28,7 +32,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         const val TAG = "MainActivity"
-//        const val redirect_uri = "https://www.163.com/"
+
+        //        const val redirect_uri = "https://www.163.com/"
         const val redirect_uri = "aheadlcx://github/authed"
         const val client_id = "84d56022a54eeb45eecf"
         const val client_secret = "af29bf5a1dfff246d342eef8e6db1e4106f9777e"
@@ -154,7 +159,8 @@ class MainActivity : AppCompatActivity() {
             request: WebResourceRequest?
         ): Boolean {
             if (request != null && request.url != null &&
-                request.url.toString().startsWith(redirect_uri)) {
+                request.url.toString().startsWith(redirect_uri)
+            ) {
                 val code = request.url.getQueryParameter("code")
                 if (code != null) {
                     activity.onHandleGetCode(code)
@@ -176,10 +182,27 @@ class MainActivity : AppCompatActivity() {
 //        }
     }
 
+    inline fun <T> Flow<T>.launchAndCollectIn(
+        owner: LifecycleOwner,
+        minActiveState: Lifecycle.State = Lifecycle.State.STARTED,
+        crossinline action: suspend CoroutineScope.(T) -> Unit
+    ) = owner.lifecycleScope.launch {
+        owner.repeatOnLifecycle(minActiveState) {
+            collect {
+                action(it)
+            }
+        }
+//        owner.repeatOnLifecycle(minActiveState) {
+//            collect {
+//                action(it)
+//            }
+//        }
+
+    }
+
     override fun onDestroy() {
         super.onDestroy()
     }
-
 
 
     /**
