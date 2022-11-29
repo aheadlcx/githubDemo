@@ -32,15 +32,16 @@ abstract class BaseFragment : Fragment() {
     }
 
 
-//    class ParamViewModelFactory<VM : ViewModel>(
-//        private val factory: () -> VM,
-//    ) : ViewModelProvider.Factory {
-//        override fun <T : ViewModel?> create(modelClass: Class<T>): T = factory() as T
-//    }
-////
-//    inline fun <reified VM : ViewModel> Fragment.viewModel(
-//        noinline factory: () -> VM,
-//    ): Lazy<VM> = viewModels { ParamViewModelFactory(factory) }
+    class ParamViewModelFactory<VM : ViewModel>(
+        private val factory: () -> VM,
+    ) : ViewModelProvider.Factory {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T =  factory() as T
+    }
+
+    //
+    inline fun <reified VM : ViewModel> Fragment.viewModel(
+        noinline factory: () -> VM,
+    ): Lazy<VM> = viewModels { ParamViewModelFactory(factory) }
 
     open fun actionOpenByBrowser() {
 
@@ -50,8 +51,7 @@ abstract class BaseFragment : Fragment() {
 
     }
 
-    open protected fun onCreateView(mainView: View?){}
-
+    open protected fun onCreateView(mainView: View?) {}
 
 
     abstract fun getBindingView(inflater: LayoutInflater, container: ViewGroup?): View

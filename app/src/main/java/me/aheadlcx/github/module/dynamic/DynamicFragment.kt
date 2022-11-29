@@ -29,6 +29,7 @@ class DynamicFragment : BaseFragment() {
     companion object {
         private const val TAG = "DynamicFragment"
     }
+    val viewModel by viewModel { DynamicViewModel() }
 
     private lateinit var binding: FragmentDynamicBinding
     private lateinit var dynamicViewModel: DynamicViewModel
@@ -160,6 +161,5 @@ class DynamicFragment : BaseFragment() {
     private fun onClickHeadView() {
         Log.i(TAG, "onClickHeadView: ")
     }
-
 
 }
