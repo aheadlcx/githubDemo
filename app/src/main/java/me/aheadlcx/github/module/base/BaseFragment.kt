@@ -47,11 +47,10 @@ abstract class BaseFragment : Fragment() {
 
 
     inline fun <T> Flow<T>.launchAndCollectIn(
-        owner: LifecycleOwner,
         minActiveState: Lifecycle.State = Lifecycle.State.STARTED,
         crossinline action: suspend CoroutineScope.(T) -> Unit
-    ) = owner.lifecycleScope.launch {
-        owner.repeatOnLifecycle(minActiveState) {
+    ) = viewLifecycleOwner.lifecycleScope.launch {
+        viewLifecycleOwner.repeatOnLifecycle(minActiveState) {
             collect {
                 action(it)
             }

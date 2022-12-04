@@ -18,6 +18,7 @@ class BodyFlowCallAdapter<R>(private val responseBodyType: R) : CallAdapter<R, F
 
 fun <R> bodyFlow(call: Call<R>): Flow<R> = flow {
     suspendCancellableCoroutine<R> { continuation ->
+        //当协程取消的时候，会调用这个 handler 函数
         continuation.invokeOnCancellation {
             call.cancel()
         }

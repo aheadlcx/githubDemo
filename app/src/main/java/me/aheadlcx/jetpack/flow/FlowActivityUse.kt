@@ -3,6 +3,9 @@ package me.aheadlcx.jetpack.flow
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
@@ -42,6 +45,15 @@ class FlowActivityUse : AppCompatActivity() {
     }
 
     private fun clickFlow() {
+        scope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+
+            }
+            val mutableSharedFlow = MutableSharedFlow<String>(10)
+            mutableSharedFlow.flowWithLifecycle(this@FlowActivityUse.lifecycle, Lifecycle.State.STARTED)
+        }
+
+
         scope.launch {
             var time = measureTimeMillis {
 

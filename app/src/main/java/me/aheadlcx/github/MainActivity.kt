@@ -14,10 +14,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.*
 import me.aheadlcx.github.api.GithubApiServiceManager
 import me.aheadlcx.net.RetrofitUtil
 import me.aheadlcx.github.api.TokenBeanReq
@@ -63,7 +60,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun initListener() {
         binding.txtUser.setOnClickListener(View.OnClickListener {
-            getUserInfoFlow()
+            testHaha()
+//            getUserInfoFlow()
         })
         binding.txtLogin.setOnClickListener {
             Log.i(TAG, "initListener: webView.loadUrl=${url},isLogin=${isLogin}")
@@ -180,6 +178,14 @@ class MainActivity : AppCompatActivity() {
 //            }
 //            return true
 //        }
+    }
+
+    var brandFlow_ = MutableStateFlow<String>("origin")
+
+    private fun testHaha(){
+        brandFlow_.launchAndCollectIn(this){
+            Log.i(TAG, "testHaha: ${it}")
+        }
     }
 
     inline fun <T> Flow<T>.launchAndCollectIn(

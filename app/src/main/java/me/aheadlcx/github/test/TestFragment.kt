@@ -4,9 +4,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.*
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -75,21 +74,41 @@ class TestFragment : BaseFragment() {
 
     fun testCLick2() {
         Log.i(TAG, "testCLick2: ")
-        MainScope().launch {
-            brandFlow.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
-                .collect{
+        brandFlow_.launchAndCollectIn {
+            Log.i(TAG, "launchAndCollectIn: ${it}")
+        }
+        brandFlow_.launchAndCollectIn2(this) {
+            Log.i(TAG, "launchAndCollectIn2: ${it}")
+        }
+//        MainScope().launch {
+//            brandFlow.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+//                .collect{
+//
+//                }
+//
+//            brandFlow.collect{
+//                Log.i(TAG, "testCLick第一个collect: it=${it}")
+//            }
+//
+//            brandFlow.collect{
+//                Log.i(TAG, "testCLick第二个collect: it=${it}")
+//            }
+//        }
+    }
 
-                }
-
-            brandFlow.collect{
-                Log.i(TAG, "testCLick第一个collect: it=${it}")
-            }
-
-            brandFlow.collect{
-                Log.i(TAG, "testCLick第二个collect: it=${it}")
+    // I do not known why this turn red tips
+    inline fun <T> Flow<T>.launchAndCollectIn2(
+        owner: LifecycleOwner,
+        minActiveState: Lifecycle.State = Lifecycle.State.STARTED,
+        crossinline action: suspend CoroutineScope.(T) -> Unit
+    ) = owner.lifecycleScope.launch {
+        owner.repeatOnLifecycle(minActiveState) {
+            collect {
+                action(it)
             }
         }
     }
+
 
     private fun onClickUser() {
         Log.i(TAG, "onClickUser: begin")
