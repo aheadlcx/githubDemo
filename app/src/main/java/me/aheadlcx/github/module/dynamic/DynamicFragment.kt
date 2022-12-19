@@ -2,10 +2,12 @@ package me.aheadlcx.github.module.dynamic
 
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Trace
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.distinctUntilChanged
@@ -18,7 +20,6 @@ import me.aheadlcx.github.databinding.FragmentDynamicBinding
 import me.aheadlcx.github.model.ui.EventUIModel
 import me.aheadlcx.github.module.base.BaseFragment
 import me.aheadlcx.github.ui.adapter.DynamicAdapter
-import java.util.*
 
 /**
  * Description:
@@ -30,6 +31,7 @@ class DynamicFragment : BaseFragment() {
     companion object {
         private const val TAG = "DynamicFragment"
     }
+
     val viewModel by viewModel { DynamicViewModel() }
 
     private lateinit var binding: FragmentDynamicBinding
@@ -61,6 +63,72 @@ class DynamicFragment : BaseFragment() {
         initLiveData()
         initRefreshLayout()
         initData()
+        initListener();
+    }
+
+    private fun initListener() {
+        mAdapter.setOnItemClickListener { _, _, position ->
+            onClickAdapterItem(position)
+        }
+    }
+
+    private fun onClickAdapterItem(position: Int) {
+        val item = mAdapter.getItem(position)
+        doOtherJob()
+        item?.action
+    }
+
+    private fun doOtherJob() {
+        Log.i(TAG, "doOtherJob: ")
+        enable(true)
+        doShortJob()
+        doLongJob()
+        doThreadJob()
+    }
+
+    private fun doShortJob() {
+        val threadId = Thread.currentThread().id
+        val traceEnabled = Trace.isEnabled()
+        Toast.makeText(
+            requireActivity(), "睡眠4.5秒,lopend,threadId=$threadId,traceEnabled=$traceEnabled", Toast
+                .LENGTH_LONG
+        )
+            .show()
+    }
+
+    fun enable(enable: Boolean) {
+        if (!enable) {
+            return
+        }
+        try {
+            val cTrace: Class<*>
+            cTrace = Class.forName("android.os.Trace")
+            cTrace.getDeclaredMethod("setAppTracingAllowed", java.lang.Boolean.TYPE)
+                .invoke(null, java.lang.Boolean.TRUE)
+        } catch (th: Throwable) {
+            th.printStackTrace()
+            Log.i(TAG, "enable: Throwable=" + th.message)
+        }
+    }
+
+    private fun doLongJob() {
+        Trace.beginSection("aheadlcxLopend")
+        Thread.sleep(2500);
+        Trace.endSection()
+    }
+
+    private fun doThreadJob() {
+        val thread = Thread {
+            Log.i("aheadlcx", "aheadlcx.run:---- ")
+            try {
+                Thread.sleep(2000)
+            } catch (e: InterruptedException) {
+                e.printStackTrace()
+            }
+            Log.i("aheadlcx", "aheadlcx.run:++++++ ")
+        }
+        thread.name = "lopendThread"
+        thread.start()
     }
 
     private fun initRefreshLayout() {

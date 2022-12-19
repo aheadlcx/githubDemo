@@ -16,10 +16,12 @@ import androidx.lifecycle.repeatOnLifecycle
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import me.aheadlcx.github.api.GithubApiServiceManager
-import me.aheadlcx.net.RetrofitUtil
 import me.aheadlcx.github.api.TokenBeanReq
 import me.aheadlcx.github.databinding.ActivityMainBinding
+import me.aheadlcx.net.RetrofitUtil
 import me.aheadlcx.util.rxLaunch
+import java.util.*
+import kotlin.collections.HashMap
 
 class MainActivity : AppCompatActivity() {
 
@@ -183,6 +185,7 @@ class MainActivity : AppCompatActivity() {
     var brandFlow_ = MutableStateFlow<String>("origin")
 
     private fun testHaha(){
+        val queue: Queue<Int> = PriorityQueue()
         brandFlow_.launchAndCollectIn(this){
             Log.i(TAG, "testHaha: ${it}")
         }

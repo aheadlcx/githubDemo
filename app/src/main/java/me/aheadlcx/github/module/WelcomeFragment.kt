@@ -7,15 +7,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.shuyu.github.kotlin.model.bean.User
 import com.yanzhenjie.permission.AndPermission
 import com.yanzhenjie.permission.runtime.Permission
 import me.aheadlcx.github.R
-import me.aheadlcx.github.common.net.GsonUtils
 import me.aheadlcx.github.config.AppConfig
-import me.aheadlcx.github.databinding.FragmentLoginOauthBinding
 import me.aheadlcx.github.databinding.FragmentWelcomeBinding
-import me.aheadlcx.github.model.AppGlobalModel
 import me.aheadlcx.github.module.base.BaseFragment
 import me.aheadlcx.github.utils.GSYPreference
 
@@ -53,13 +49,17 @@ class WelcomeFragment : BaseFragment() {
     }
 
     fun checkPermission() {
+//        val storage = Permission.Group.STORAGE
+        val storage = arrayOf(Permission.READ_EXTERNAL_STORAGE, Permission.WRITE_EXTERNAL_STORAGE)
+//        , "android.permission.MANAGE_EXTERNAL_STORAGE")
+
         AndPermission.with(this)
             .runtime()
-            .permission(Permission.Group.STORAGE)
+            .permission(storage)
             .onGranted {
                 goNext(requireView())
             }.onDenied {
-                Log.i(TAG, "checkPermission: onDenied")
+                Log.i(TAG, "checkPermission: onDenied=" + it.toString())
             }.start()
     }
 
