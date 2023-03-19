@@ -24,6 +24,7 @@ class GithubTokenInterceptor : Interceptor {
         val builder = originalRequest.newBuilder()
 //        val accessToken = RetrofitUtil.accessToken
         val accessToken = accessTokenStorage
+        Log.i(TAG, "intercept:3333")
         if (!TextUtils.isEmpty(accessToken)) {
             builder.header("Authorization", "Bearer " + accessToken)
             Log.i(TAG, "intercept: accessToken=" + accessToken)

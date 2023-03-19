@@ -84,7 +84,8 @@ public class FlowRetrofitUtil {
                 .baseUrl(url)
                 .addCallAdapterFactory(FlowCallAdapterFactory.create(false))
 //                .addConverterFactory(MyGsonConverterFactory.create(new Gson()));
-                .addConverterFactory(GsonConverterFactory.create());
+                .addConverterFactory(GsonConverterFactory.create());// responseBodyConverter
+        // 返回null 代表不是自己处理
 //                .addConverterFactory(CustomGsonConverterFactory.create())
 //                .addCallAdapterFactory(new ApiResultCallAdapterFactory());
         clientBuilder.connectTimeout(DEFAULT_CONNECT_TIMEOUT, TimeUnit.SECONDS)

@@ -43,6 +43,9 @@ class DynamicAdapter : BaseQuickAdapter<EventUIModel?, DynamicAdapter.VH>() {
         val imageUrl = eventUIModel?.image ?: ""
         Log.i(TAG, "onBindViewHolder:position=${position},imageUrl=${imageUrl}")
         CommonUtils.loadUserHeaderImage(holder.viewBinding.eventUserImg, imageUrl)
+        holder.viewBinding.eventUserName.setOnClickListener {
+            Log.i(TAG, "onBindViewHolder: eventUserName")
+        }
     }
 
 }

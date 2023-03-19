@@ -19,6 +19,8 @@ import javax.net.ssl.X509TrustManager;
 
 import me.aheadlcx.github.api.GitHubService;
 import me.aheadlcx.github.api.GitHubServiceKotlin;
+import me.aheadlcx.jetpack.net.interceptor.AccessTokenAuthenticator;
+import me.aheadlcx.jetpack.net.interceptor.TestInterceptor;
 import me.aheadlcx.net.converter.MyGsonConverterFactory;
 import me.aheadlcx.jetpack.net.interceptor.GithubTokenInterceptor;
 import okhttp3.OkHttpClient;
@@ -55,9 +57,13 @@ public class RetrofitUtil {
 
         OkHttpClient.Builder clientBuilder = new OkHttpClient().newBuilder();
         LoggingInterceptor loggingInterceptor = new LoggingInterceptor.Builder().build();
-        clientBuilder.addInterceptor(loggingInterceptor);
+        clientBuilder
+//                .authenticator(new AccessTokenAuthenticator())
+                .addInterceptor(loggingInterceptor);
         clientBuilder.addInterceptor(new GithubTokenInterceptor());
-        Retrofit.Builder builder = new Retrofit.Builder().client(clientBuilder.build())
+        clientBuilder.addInterceptor(new TestInterceptor());
+        OkHttpClient okHttpClient = clientBuilder.build();
+        Retrofit.Builder builder = new Retrofit.Builder().client(okHttpClient)
                 .baseUrl(url)
                 .addConverterFactory(MyGsonConverterFactory.create(new Gson()));
 //                .addConverterFactory(CustomGsonConverterFactory.create())
@@ -70,6 +76,7 @@ public class RetrofitUtil {
                 return true;
             }
         });
+
 
         Retrofit retrofitRes = builder.build();
         map.put(url, retrofitRes);

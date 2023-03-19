@@ -5,15 +5,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.*
+import com.bumptech.glide.Glide
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import me.aheadlcx.github.common.net.GsonUtils
-import me.aheadlcx.github.databinding.FragmentDynamicBinding
 import me.aheadlcx.github.databinding.FragmentTestBinding
 import me.aheadlcx.github.module.base.BaseFragment
 import me.aheadlcx.github.repository.UserRepository
+import me.aheadlcx.jetpack.livedata.LiveDataBus
+import java.util.*
+import kotlin.collections.HashMap
 
 /**
  * Description:
@@ -32,6 +38,8 @@ class TestFragment : BaseFragment() {
     var brandFlow = brandFlow_.asStateFlow()
 
     var count = 1
+    val viewModel by viewModel { TestViewModel(1) }
+
     private lateinit var binding: FragmentTestBinding
     private val userRepo: UserRepository = UserRepository()
     override fun getBindingView(inflater: LayoutInflater, container: ViewGroup?): View {
@@ -43,7 +51,8 @@ class TestFragment : BaseFragment() {
         super.onCreateView(mainView)
         binding.txtClick.setOnClickListener {
 //            onClickUser()
-            testCLick1()
+//            testCLick1()
+            testException()
         }
         binding.txtCLick2.setOnClickListener {
             testCLick2()
@@ -54,8 +63,34 @@ class TestFragment : BaseFragment() {
         }
     }
 
+    fun test2023(){
+        val provider = ViewModelProvider(this, object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                return super.create(modelClass)
+            }
+        })
+        provider.get(TestViewModel::class.java)
+    }
+
+    private fun testException(){
+//        viewModel.testZip()
+        viewModel.getData()
+    }
+
+    private fun test(){
+
+//        observer.javaClass.isAssignableFrom(LiveDataBus.ObserverWrapper::class.java)
+//        Objects.hash()
+//        Objects.equals()
+        viewModel.eventUiModelLiveData.observe(this){
+
+        }
+
+        binding.txtCLick4.text = "aheadlcx"
+    }
+
     private fun testClick3() {
-        MainScope().launch {
+        MainScope().launch(Dispatchers.IO) {
             val replayCache = brandFlow.replayCache
             replayCache.forEach {
                 Log.i(TAG, "testClick3: it=${it}")
@@ -63,7 +98,16 @@ class TestFragment : BaseFragment() {
         }
     }
 
-    fun testCLick1() {
+    suspend fun testCLick1() {
+        Glide.with(this).load("").skipMemoryCache(true)
+        var mutex = Mutex()
+        mutex.lock()
+
+        mutex.unlock()
+        mutex.withLock {
+
+        }
+
         count++
         var content = "count=" + count
         Log.i(TAG, "testCLick1: ${content}")

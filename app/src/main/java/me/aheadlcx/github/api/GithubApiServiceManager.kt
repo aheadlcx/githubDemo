@@ -24,7 +24,7 @@ object GithubApiServiceManager {
         .addConverterFactory(GsonConverterFactory.create())
         .client(
             OkHttpClient.Builder()
-                .addInterceptor(LoggingInterceptor.Builder().build())
+//                .addInterceptor(LoggingInterceptor.Builder().build())
                 .addInterceptor(GithubTokenInterceptor())
                 .addInterceptor(BaseUrlInterceptor())
                 .connectTimeout(10, TimeUnit.SECONDS)

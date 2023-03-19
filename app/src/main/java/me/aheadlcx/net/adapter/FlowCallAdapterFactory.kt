@@ -19,15 +19,17 @@ class FlowCallAdapterFactory private constructor(private val async: Boolean) :
         annotations: Array<out Annotation>,
         retrofit: Retrofit
     ): CallAdapter<*, *>? {
+        //返回 null  代表自己不想要这个
         if (getRawType(returnType) != Flow::class.java) return null
         if (returnType !is ParameterizedType) {
+            //必须是参数化类型
             throw IllegalStateException("the flow type must be parameterized as Flow<Bean>")
         }
 
-        //获取Flow的泛型参数
+        //获取Flow的泛型参数，例如 Flow<String> 返回的就是 String
         val flowableType = getParameterUpperBound(0, returnType)
 
-        //获取Flow的泛型参数的原始类型
+        //获取Flow的泛型参数的原始类型，返回 class 类型
         val rawFlowableType = getRawType(flowableType)
         return if (rawFlowableType == Response::class.java) {
             if (flowableType !is ParameterizedType) {

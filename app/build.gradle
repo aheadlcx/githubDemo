@@ -4,7 +4,7 @@ plugins {
 //    id: 'kotlin-kapt'
 
 }
-apply plugin: 'com.bytedance.rhea-trace'
+//apply plugin: 'com.bytedance.rhea-trace'
 def okHttpVersion = '3.12.1'
 
 android {
@@ -101,7 +101,7 @@ dependencies {
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 
-    implementation "com.bytedance.btrace:rhea-core:1.0.1"
+//    implementation "com.bytedance.btrace:rhea-core:1.0.1"
 //    def lifecycle_version = "2.2.0"
 //    def arch_version = "2.1.0"
 //    //// ViewModel
@@ -118,23 +118,23 @@ dependencies {
 //    kapt "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
 }
 
-rheaTrace {
-
-    compilation {
-        //为减少 APK 体积, 你可以为 App 中需要跟踪的方法设置 id 以此来跟踪此自定义事件, 默认值 false。
-        traceWithMethodID = false
-        //该文件配置决定哪些方法您不希望跟踪, 默认值 null。
-        traceFilterFilePath = "${project.rootDir}/rhea-trace/traceFilter.txt"
-        //用特指定方法 id 来设置自定义事件名称, 默认值 null。
-        applyMethodMappingFilePath = "${project.rootDir}/rhea-trace/keep-method-id.txt"
-    }
-
-    runtime {
-        //仅在主线程抓取跟踪事件, 默认值 false。
-        mainThreadOnly true
-        //在 App 启动之初开始抓取跟踪事件, 默认值 true。
-        startWhenAppLaunch true
-        //指定内存存储 atrace 数据 ring buffer 的大小。
-        atraceBufferSize "500000"
-    }
-}
+//rheaTrace {
+//
+//    compilation {
+//        //为减少 APK 体积, 你可以为 App 中需要跟踪的方法设置 id 以此来跟踪此自定义事件, 默认值 false。
+//        traceWithMethodID = false
+//        //该文件配置决定哪些方法您不希望跟踪, 默认值 null。
+//        traceFilterFilePath = "${project.rootDir}/rhea-trace/traceFilter.txt"
+//        //用特指定方法 id 来设置自定义事件名称, 默认值 null。
+//        applyMethodMappingFilePath = "${project.rootDir}/rhea-trace/keep-method-id.txt"
+//    }
+//
+//    runtime {
+//        //仅在主线程抓取跟踪事件, 默认值 false。
+//        mainThreadOnly true
+//        //在 App 启动之初开始抓取跟踪事件, 默认值 true。
+//        startWhenAppLaunch true
+//        //指定内存存储 atrace 数据 ring buffer 的大小。
+//        atraceBufferSize "500000"
+//    }
+//}

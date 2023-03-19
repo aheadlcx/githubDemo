@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    >
 
     <TextView
         android:id="@+id/txtClick"
@@ -10,5 +11,77 @@
         android:layout_height="100dp"
         android:gravity="center"
         android:text="点击Flow"></TextView>
+
+    <TextView
+        android:id="@+id/txtSHowZip"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:text="showZip"></TextView>
+
+
+    <TextView
+        android:id="@+id/txtAddHotCollect"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:text="addHotCollect"></TextView>
+
+    <TextView
+        android:id="@+id/txtClickAddCollect"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:gravity="center"
+        android:text="添加Flow.collect"></TextView>
+
+    <TextView
+        android:id="@+id/txtClickAddData"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:gravity="center"
+        android:text="添加Flow.数据"></TextView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:orientation="horizontal"
+        >
+        <TextView
+            android:id="@+id/txtAnr"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:gravity="center"
+            android:text="Sp.Anr"/>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:orientation="horizontal"
+        >
+        <TextView
+            android:id="@+id/txtLoadWebp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:gravity="center"
+            android:text="loadWebp"/>
+
+        <TextView
+            android:id="@+id/txtUnLoadWebp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:gravity="center"
+            android:text="UnLoadWebp"/>
+    </LinearLayout>
+
+
+    <ImageView
+        android:id="@+id/imgWebp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        >
+
+    </ImageView>
 
 </LinearLayout>

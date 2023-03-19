@@ -35,7 +35,7 @@ abstract class BaseFragment : Fragment() {
 
 
     class ParamViewModelFactory<VM : ViewModel>(
-        private val factory: () -> VM,
+        private val factory: () -> VM
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T = factory() as T
     }

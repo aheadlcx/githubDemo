@@ -6,14 +6,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
+    <Button
         android:id="@+id/txtClick"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:visibility="gone"
         android:gravity="center"
         android:text="点击测试"
-        android:visibility="gone" />
-
+        />
 
     <TextView
         android:id="@+id/txtClickUser"
@@ -21,7 +21,8 @@
         android:layout_height="50dp"
         android:gravity="center"
         android:text="点击user"
-        android:visibility="gone" />
+        android:visibility="gone"
+        />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/refreshLayout"
